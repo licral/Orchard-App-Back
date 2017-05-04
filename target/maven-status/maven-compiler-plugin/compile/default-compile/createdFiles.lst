@@ -1,2 +1,3 @@
-servlet/HelloServlet.class
+servlet/RootServlet.class
+servlet/TestServlet.class
 launch/Main.class
