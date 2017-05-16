@@ -20,7 +20,7 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
     	PrintWriter write = resp.getWriter();
-    	write.write("{'data': 'hello world'}");
+    	write.write('{"data": "hello world"}');
     	write.flush();
     	write.close();
     }
