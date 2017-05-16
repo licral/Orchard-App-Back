@@ -2,7 +2,8 @@ package servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.json.*;
+import javax.json.Json;
+import javax.json.JsonObject;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
