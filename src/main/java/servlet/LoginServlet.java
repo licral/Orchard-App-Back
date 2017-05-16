@@ -27,7 +27,7 @@ public class LoginServlet extends HttpServlet {
 //    			.add("data", "You got to the login route! :D")
 //    			.build();
 //    	write.print(o.toString());
-    	writer.write('{"id_token" : 12345, "data": "Hello world"}');
+    	write.write('{"id_token" : 12345, "data": "Hello world"}');
     	write.flush();
     	write.close();
     }
