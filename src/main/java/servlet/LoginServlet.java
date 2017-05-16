@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
         name = "LoginServlet",
         urlPatterns = {"/login"}
     )
-public class TestServlet extends HttpServlet {
+public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
