@@ -20,7 +20,7 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
     	PrintWriter write = resp.getWriter();
-    	write.write('{id_token : 12345, data: "Hello world"}');
+    	write.write("Hello world");
     	write.flush();
     	write.close();
     }
