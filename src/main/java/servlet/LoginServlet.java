@@ -26,11 +26,8 @@ public class LoginServlet extends HttpServlet {
     			.add("data", "You got to the login route! :D")
     			.build();
     	write.print(o.toString());
-
-//        ServletOutputStream out = resp.getOutputStream();
-//        out.write("{id_token: '12345', data: 'You got to login route'}".getBytes());
-//        out.flush();
-//        out.close();
+    	write.flush();
+    	write.close();
     }
 
 }
