@@ -2,6 +2,7 @@ package servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.json.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -20,9 +21,11 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
     	PrintWriter write = resp.getWriter();
-    	write.write("{id_token: '12345', data: 'You got to login route'}");
-    	write.flush();
-    	write.close();
+    	JsonObject o = Json.createObjectBuilder()
+    			.add("id_token", 124243)
+    			.add("data", "You got to the login route! :D")
+    			.build();
+    	write.print(o.toString());
 
 //        ServletOutputStream out = resp.getOutputStream();
 //        out.write("{id_token: '12345', data: 'You got to login route'}".getBytes());
