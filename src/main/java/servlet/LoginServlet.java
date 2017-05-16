@@ -18,8 +18,9 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+
         ServletOutputStream out = resp.getOutputStream();
-        out.write("You got to the login route!".getBytes());
+        out.write("{id_token: '12345', data: 'You got to login route'}".getBytes());
         out.flush();
         out.close();
     }
