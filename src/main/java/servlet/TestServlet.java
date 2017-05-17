@@ -26,7 +26,7 @@ public class TestServlet extends HttpServlet {
     	String auth = req.getHeader("Authorization");
     	
     	try{
-    		String subject = Jwts.parser().setSigningKey("secret".getBytes("UTF-8")).parseClaimsJws(auth).getBody().getSubject();
+    		String subject = Jwts.parser().setSigningKey("secret".getBytes("UTF-8")).parseClaimsJws(auth).toString();
     		write.write("Got header: " + subject);
     	} catch (SignatureException e) {
     		write.write("Error: " + e);
