@@ -29,8 +29,6 @@ public class TestServlet extends HttpServlet {
     	try{
     		Claims claims = Jwts.parser().setSigningKey("secret".getBytes("UTF-8")).parseClaimsJws(auth).getBody();
     		
-//    		String username = claims.getBody().getSubject();
-    		
     		write.write("Got header: " + claims);
     	} catch (SignatureException e) {
     		write.write("Error: " + e);
