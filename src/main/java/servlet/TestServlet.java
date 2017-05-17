@@ -28,11 +28,8 @@ public class TestServlet extends HttpServlet {
     		String subject = Jwts.parser().setSigningKey("secret".getBytes("UTF-8")).parseClaimsJws(auth).getBody().getSubject();
     		write.write("Got header: " + subject);
     	} catch (SignatureException e) {
-    		write.write("Error: " + e)
+    		write.write("Error: " + e);
     	}
-    	
-    	
-    	
     	write.flush();
     	write.close();
     }
