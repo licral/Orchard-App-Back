@@ -30,6 +30,13 @@ public class LoginServlet extends HttpServlet {
     			.signWith(SignatureAlgorithm.HS512, "secret".getBytes("UTF-8"))
     			.compact();
     	
+    	try{
+    		Jws<Claims> jws = Jwts.parser().setSigningKey("secret".getBytes("UTF-8")).parseClaimsJws(token);
+    		System.out.println("Got header: " + jws);
+    	} catch (MalformedJwtException e) {
+    		System.out.println(e)
+    	}
+    	
     	write.write("{\"data\": \"hello world\", \"id_token\": \"" + compactJws + "\"}");
     	write.flush();
     	write.close();
