@@ -34,9 +34,10 @@ public class LoginServlet extends HttpServlet {
 //    			.compact();
     	
     	String username = req.getParameter("username");
+    	String password = req.getParameter("password");
     	
     	resp.setStatus(200);
-    	write.write("{\"data\": \"hello world\", \"id_token\": \"" + username + "\"}");
+    	write.write("{\"data\": \"hello world\", \"id_token\": \"" + password + "\"}");
     	write.flush();
     	write.close();
 //    	resp.sendError(400);
