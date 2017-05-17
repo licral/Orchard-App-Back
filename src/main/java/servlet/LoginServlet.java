@@ -40,7 +40,7 @@ public class LoginServlet extends HttpServlet {
     		System.out.println(e);
     	}
     	
-    	write.write("{\"data\": \"hello world\", \"id_token\": \"" + compactJws + "\"}");
+    	write.write("{\"data\": \"" + jws.getBody().getSubject() + "\", \"id_token\": \"" + compactJws + "\"}");
     	write.flush();
     	write.close();
     }
