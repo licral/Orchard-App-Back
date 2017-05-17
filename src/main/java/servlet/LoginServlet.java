@@ -36,7 +36,7 @@ public class LoginServlet extends HttpServlet {
 //    	write.write("{\"data\": \"hello world\", \"id_token\": \"" + compactJws + "\"}");
 //    	write.flush();
 //    	write.close();
-    	res.sendError(400);
+    	resp.sendError(400);
     }
 
 }
