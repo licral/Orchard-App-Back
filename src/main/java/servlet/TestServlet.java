@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureException;
 
 @WebServlet(
         name = "TestServlet",
