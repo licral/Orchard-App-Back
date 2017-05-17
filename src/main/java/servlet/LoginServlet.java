@@ -34,8 +34,8 @@ public class LoginServlet extends HttpServlet {
     	} else {
     		if(username.equals("Bonnie") && password.equals("12345")){
     	    	String token = Jwts.builder()
-    	    			.put("username", username)
-    	    			.put("password", password)
+    	    			.claim("username", username)
+    	    			.claim("password", password)
     	    			.signWith(SignatureAlgorithm.HS512, "secret".getBytes("UTF-8"))
     	    			.compact();
 
