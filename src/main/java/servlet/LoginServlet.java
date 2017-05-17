@@ -24,18 +24,19 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
     	
-    	resp.setStatus(200);
+//    	resp.setStatus(400);
     	
-    	PrintWriter write = resp.getWriter();
-    	
-    	String compactJws = Jwts.builder()
-    			.setSubject("Joe")
-    			.signWith(SignatureAlgorithm.HS512, "secret".getBytes("UTF-8"))
-    			.compact();
-    	
-    	write.write("{\"data\": \"hello world\", \"id_token\": \"" + compactJws + "\"}");
-    	write.flush();
-    	write.close();
+//    	PrintWriter write = resp.getWriter();
+//    	
+//    	String compactJws = Jwts.builder()
+//    			.setSubject("Joe")
+//    			.signWith(SignatureAlgorithm.HS512, "secret".getBytes("UTF-8"))
+//    			.compact();
+//    	
+//    	write.write("{\"data\": \"hello world\", \"id_token\": \"" + compactJws + "\"}");
+//    	write.flush();
+//    	write.close();
+    	res.sendError(400);
     }
 
 }
