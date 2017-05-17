@@ -26,21 +26,27 @@ public class LoginServlet extends HttpServlet {
     	
     	PrintWriter write = resp.getWriter();
     	
-    	
-//    	
-//    	String compactJws = Jwts.builder()
-//    			.setSubject("Joe")
-//    			.signWith(SignatureAlgorithm.HS512, "secret".getBytes("UTF-8"))
-//    			.compact();
-    	
     	String username = req.getParameter("username");
     	String password = req.getParameter("password");
     	
-    	resp.setStatus(200);
-    	write.write("{\"data\": \"hello world\", \"id_token\": \"" + password + "\"}");
-    	write.flush();
-    	write.close();
-//    	resp.sendError(400);
+    	if(username == null || password == null){
+    		resp.sendError(400)
+    	} else {
+    		if(username.equals("Bonnie") && password.equals("12345")){
+    	    	String token = Jwts.builder()
+    	    			.put("username", username)
+    	    			.put("password", password)
+    	    			.signWith(SignatureAlgorithm.HS512, "secret".getBytes("UTF-8"))
+    	    			.compact();
+
+    	    	resp.setStatus(200);
+    	    	write.write("{\"data\": \"hello world\", \"id_token\": \"" + token + "\"}");
+    	    	write.flush();
+    	    	write.close();
+    		} else {
+    			resp.sendError(400);
+    		}
+    	}
     	
     	
     	
