@@ -10,8 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.SignatureException;
 
 @WebServlet(
@@ -25,11 +23,11 @@ public class TestServlet extends HttpServlet {
             throws ServletException, IOException {
     	PrintWriter write = resp.getWriter();
     	
-    	String token = req.getHeader("Authorization");
+    	String auth = req.getHeader("Authorization");
     	
     	try{
-    		Jws<Claims> jws = Jwts.parser().setSigningKey("secret".getBytes("UTF-8")).parseClaimsJws(token);
-    		write.write("Got header: " + jws);
+    		String subject = Jwts.parser().setSigningKey("secret".getBytes("UTF-8")).parseClaimsJws(auth).getBody().getSubject();
+    		write.write("Got header: " + subject);
     	} catch (SignatureException e) {
     		write.write("Error: " + e);
     	}

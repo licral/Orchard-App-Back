@@ -10,10 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.impl.crypto.MacProvider;
 import java.security.Key;
 
@@ -33,17 +30,7 @@ public class LoginServlet extends HttpServlet {
     			.signWith(SignatureAlgorithm.HS512, "secret".getBytes("UTF-8"))
     			.compact();
     	
-    	String data = "Got nothing";
-    	
-    	try{
-    		Jws<Claims> jws = Jwts.parser().setSigningKey("secret".getBytes("UTF-8")).parseClaimsJws(compactJws);
-    		data = jws.getBody().getSubject();
-    		System.out.println("Got header: " + jws);
-    	} catch (MalformedJwtException e) {
-    		System.out.println(e);
-    	}
-    	
-    	write.write("{\"data\": \"" + data + "\", \"id_token\": \"" + compactJws + "\"}");
+    	write.write("{\"data\": \"hello world\", \"id_token\": \"" + compactJws + "\"}");
     	write.flush();
     	write.close();
     }
