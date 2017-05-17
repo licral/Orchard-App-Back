@@ -25,10 +25,9 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
     	PrintWriter write = resp.getWriter();
     	
-    	Key key = MacProvider.generateKey();
     	String compactJws = Jwts.builder()
     			.setSubject("Joe")
-    			.signWith(SignatureAlgorithm.HS512, key)
+    			.signWith(SignatureAlgorithm.HS512, "secret".getBytes("UTF-8"))
     			.compact();
     	
     	write.write("{\"data\": \"hello world\", \"id_token\": \"" + compactJws + "\"}");

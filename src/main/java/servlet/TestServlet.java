@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import io.jsonwebtoken.Jwts;
+
 @WebServlet(
         name = "TestServlet",
         urlPatterns = {"/test"}
@@ -21,6 +23,8 @@ public class TestServlet extends HttpServlet {
     	PrintWriter write = resp.getWriter();
     	
     	String auth = req.getHeader("Authorization");
+    	
+//    	String subject = Jwts.parser().setSigningKey(key)
     	
     	write.write("Got header: " + auth);
     	
