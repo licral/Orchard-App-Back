@@ -23,6 +23,9 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+    	
+    	resp.setStatus(200);
+    	
     	PrintWriter write = resp.getWriter();
     	
     	String compactJws = Jwts.builder()
