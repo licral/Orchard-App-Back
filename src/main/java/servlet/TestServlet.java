@@ -28,23 +28,23 @@ public class TestServlet extends HttpServlet {
     	
     	try{
     		Claims claims = Jwts.parser().setSigningKey("secret".getBytes("UTF-8")).parseClaimsJws(auth).getBody();
+
+    		String username = claims.get("username");
+    		String password = claims.get("password");
+    		
+    		if(username == null || password == null){
+        		resp.sendError(400);
+        	} else {
+        		if(username.equals("Bonnie") && password.equals("12345")){
+        			write.write("Got to test route!");
+        	    	write.flush();
+        	    	write.close();
+        		} else {
+        			resp.sendError(400);
+        		}
+        	}
     	} catch (SignatureException e) {
 			resp.sendError(400);
-    	}
-    	
-		String username = claims.get("username");
-		String password = claims.get("password");
-		
-		if(username == null || password == null){
-    		resp.sendError(400);
-    	} else {
-    		if(username.equals("Bonnie") && password.equals("12345")){
-    			write.write("Got to test route!");
-    	    	write.flush();
-    	    	write.close();
-    		} else {
-    			resp.sendError(400);
-    		}
     	}
     }
 
