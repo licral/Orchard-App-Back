@@ -29,8 +29,8 @@ public class TestServlet extends HttpServlet {
     	try{
     		Claims claims = Jwts.parser().setSigningKey("secret".getBytes("UTF-8")).parseClaimsJws(auth).getBody();
 
-    		String username = claims.get("username");
-    		String password = claims.get("password");
+    		String username = claims.get("username").toString();
+    		String password = claims.get("password").toString();
     		
     		if(username == null || password == null){
         		resp.sendError(400);
