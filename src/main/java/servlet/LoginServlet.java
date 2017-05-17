@@ -33,14 +33,17 @@ public class LoginServlet extends HttpServlet {
     			.signWith(SignatureAlgorithm.HS512, "secret".getBytes("UTF-8"))
     			.compact();
     	
+    	String data = "Got nothing";
+    	
     	try{
     		Jws<Claims> jws = Jwts.parser().setSigningKey("secret".getBytes("UTF-8")).parseClaimsJws(compactJws);
+    		data = jws.getBody().getSubject();
     		System.out.println("Got header: " + jws);
     	} catch (MalformedJwtException e) {
     		System.out.println(e);
     	}
     	
-    	write.write("{\"data\": \"" + jws.getBody().getSubject() + "\", \"id_token\": \"" + compactJws + "\"}");
+    	write.write("{\"data\": \"" + data + "\", \"id_token\": \"" + compactJws + "\"}");
     	write.flush();
     	write.close();
     }
