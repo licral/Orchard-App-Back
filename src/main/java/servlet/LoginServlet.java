@@ -53,9 +53,6 @@ public class LoginServlet extends HttpServlet {
     			resp.sendError(400);
     		}
     	}
-
-
-
     }
 
     private boolean authenticate(String username, String password) throws ServletException{
