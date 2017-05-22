@@ -66,16 +66,8 @@ public class LoginServlet extends HttpServlet {
 		try {
 			ps = con.prepareStatement("select password from users where organisation_id='" + username + "'");
 			rs = ps.executeQuery();
-
 			if(rs != null && rs.next()){
-				System.out.println(rs.getString("password"));
-				return true;
-
-//				User user = new User(rs.getString("name"), rs.getString("email"), rs.getString("country"), rs.getInt("id"));
-//				logger.info("User found with details="+user);
-//				HttpSession session = request.getSession();
-//				session.setAttribute("User", user);
-//				response.sendRedirect("home.jsp");;
+				return password.equals(rs.getString("password"));
 			}else{
 				System.out.println("No results");
 				return false;
@@ -93,6 +85,7 @@ public class LoginServlet extends HttpServlet {
 			}
 
 		}
+		return false;
     }
 
 }
