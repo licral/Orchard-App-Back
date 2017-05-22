@@ -32,12 +32,10 @@ public class LoginServlet extends HttpServlet {
     	String username = req.getParameter("username");
     	String password = req.getParameter("password");
 
-    	System.out.println(authenticate(username, password));
-
     	if(username == null || password == null){
     		resp.sendError(400);
     	} else {
-    		if(username.equals("Bonnie") && password.equals("12345")){
+    		if(authenticate(username, password)){
     	    	PrintWriter write = resp.getWriter();
 
     	    	String token = Jwts.builder()
