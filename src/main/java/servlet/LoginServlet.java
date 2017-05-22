@@ -90,7 +90,6 @@ public class LoginServlet extends HttpServlet {
     private void storeToken(String username, String token) throws ServletException{
     	Connection con = (Connection)getServletContext().getAttribute("DBConnection");
     	PreparedStatement ps = null;
-		ResultSet rs = null;
 		try {
 			ps = con.prepareStatement("update users set token=? where organisation_id=?");
 			ps.setString(1, token);
@@ -102,7 +101,6 @@ public class LoginServlet extends HttpServlet {
 			throw new ServletException("DB Connection problem.");
 		}finally{
 			try {
-				rs.close();
 				ps.close();
 			} catch (SQLException e) {
 				System.out.println("SQLException in closing PreparedStatement");
