@@ -23,12 +23,14 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-    	
+
+
+
     	PrintWriter write = resp.getWriter();
-    	
+
     	String username = req.getParameter("username");
     	String password = req.getParameter("password");
-    	
+
     	if(username == null || password == null){
     		resp.sendError(400);
     	} else {
@@ -47,9 +49,9 @@ public class LoginServlet extends HttpServlet {
     			resp.sendError(400);
     		}
     	}
-    	
-    	
-    	
+
+
+
     }
 
 }
