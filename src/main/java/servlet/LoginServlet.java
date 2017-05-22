@@ -59,7 +59,7 @@ public class LoginServlet extends HttpServlet {
 
     }
 
-    private boolean authenticate(String username, String password){
+    private boolean authenticate(String username, String password) throws ServletException{
     	Connection con = (Connection)getServletContext().getAttribute("DBConnection");
     	PreparedStatement ps = null;
 		ResultSet rs = null;
