@@ -40,6 +40,7 @@ public class LogoutServlet extends HttpServlet {
     			ps = con.prepareStatement("update users set token=NULL where token=?");
     			ps.setString(1, token);
     			ps.execute();
+    			resp.setStatus(200);
     		} catch (SQLException e) {
     			e.printStackTrace();
     			System.out.println("Database connection problem");
