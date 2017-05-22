@@ -37,7 +37,7 @@ public class LoginServlet extends HttpServlet {
 			rs = ps.executeQuery();
 
 			if(rs != null && rs.next()){
-				System.out.println(rs.toString());
+				System.out.println(rs.getString("organisation_id"));
 
 //				User user = new User(rs.getString("name"), rs.getString("email"), rs.getString("country"), rs.getInt("id"));
 //				logger.info("User found with details="+user);
