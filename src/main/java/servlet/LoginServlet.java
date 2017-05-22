@@ -29,47 +29,17 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-    	Connection con = (Connection)getServletContext().getAttribute("DBConnection");
-    	PreparedStatement ps = null;
-		ResultSet rs = null;
-		try {
-			ps = con.prepareStatement("select * from users");
-			rs = ps.executeQuery();
-
-			if(rs != null && rs.next()){
-				System.out.println(rs.getString("organisation_id"));
-
-//				User user = new User(rs.getString("name"), rs.getString("email"), rs.getString("country"), rs.getInt("id"));
-//				logger.info("User found with details="+user);
-//				HttpSession session = request.getSession();
-//				session.setAttribute("User", user);
-//				response.sendRedirect("home.jsp");;
-			}else{
-				System.out.println("Not valid");
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			System.out.println("Database connection problem");
-			throw new ServletException("DB Connection problem.");
-		}finally{
-			try {
-				rs.close();
-				ps.close();
-			} catch (SQLException e) {
-				System.out.println("SQLException in closing PreparedStatement or ResultSet");
-			}
-
-		}
-
-    	PrintWriter write = resp.getWriter();
-
     	String username = req.getParameter("username");
     	String password = req.getParameter("password");
+
+    	System.out.println(authenticate(username, password));
 
     	if(username == null || password == null){
     		resp.sendError(400);
     	} else {
     		if(username.equals("Bonnie") && password.equals("12345")){
+    	    	PrintWriter write = resp.getWriter();
+
     	    	String token = Jwts.builder()
     	    			.claim("username", username)
     	    			.claim("password", password)
@@ -87,6 +57,42 @@ public class LoginServlet extends HttpServlet {
 
 
 
+    }
+
+    private boolean authenticate(String username, String password){
+    	Connection con = (Connection)getServletContext().getAttribute("DBConnection");
+    	PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			ps = con.prepareStatement("select password from users where organisation_id='" + username + "'");
+			rs = ps.executeQuery();
+
+			if(rs != null && rs.next()){
+				System.out.println(rs.getString("password"));
+				return true;
+
+//				User user = new User(rs.getString("name"), rs.getString("email"), rs.getString("country"), rs.getInt("id"));
+//				logger.info("User found with details="+user);
+//				HttpSession session = request.getSession();
+//				session.setAttribute("User", user);
+//				response.sendRedirect("home.jsp");;
+			}else{
+				System.out.println("No results");
+				return false;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("Database connection problem");
+			throw new ServletException("DB Connection problem.");
+		}finally{
+			try {
+				rs.close();
+				ps.close();
+			} catch (SQLException e) {
+				System.out.println("SQLException in closing PreparedStatement or ResultSet");
+			}
+
+		}
     }
 
 }
