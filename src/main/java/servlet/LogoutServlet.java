@@ -29,16 +29,16 @@ public class LogoutServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-    	String username = req.getParameter("username");
+    	String token = req.getParameter("token");
 
-    	if(username == null || password == null){
+    	if(token == null){
     		resp.sendError(400);
     	} else {
     		Connection con = (Connection)getServletContext().getAttribute("DBConnection");
         	PreparedStatement ps = null;
     		try {
-    			ps = con.prepareStatement("update users set token=NULL where organisation_id=?");
-    			ps.setString(1, username);
+    			ps = con.prepareStatement("update users set token=NULL where token=?");
+    			ps.setString(1, token);
     			ps.execute();
     		} catch (SQLException e) {
     			e.printStackTrace();
