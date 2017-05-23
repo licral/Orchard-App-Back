@@ -46,10 +46,14 @@ public class GetServlet extends HttpServlet {
 		try {
 			ps = con.prepareStatement("select species from species");
 			rs = ps.executeQuery();
+			String speciesArray = "[";
 			if(rs != null && rs.next()){
 				do{
-					System.out.println(rs.getString("species"));
+					speciesArray += "\"" + rs.getString("species") + "\",";
+
 				} while(rs.next());
+				speciesArray += "]";
+				System.out.println(speciesArray);
 			}else{
 				System.out.println("No results");
 				resp.sendError(400);
