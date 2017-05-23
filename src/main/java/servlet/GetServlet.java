@@ -35,7 +35,7 @@ public class GetServlet extends HttpServlet {
     	} else {
     		if(service.equals("species")){
     			getSpecies(resp);
-	    	} else if(service.equals("variety"){
+	    	} else if(service.equals("variety")){
 	    		getVariety(resp, req.getPathInfo().substring(2));
 	    	}
     		else {
