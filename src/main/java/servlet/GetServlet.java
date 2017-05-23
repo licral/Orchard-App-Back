@@ -1,6 +1,7 @@
 package servlet;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.io.PrintWriter;
 
 import java.sql.Connection;
@@ -76,10 +77,10 @@ public class GetServlet extends HttpServlet {
         		}
         	}
     	} catch (SignatureException e) {
-    		System.out.print(e.message);
+    		System.out.print(e.getMessage);
 			return false;
     	} catch (UnsupportedEncodingException e){
-    		System.out.print(e.message);
+    		System.out.print(e.getMessage);
     		return false;
     	}
     }
