@@ -34,8 +34,11 @@ public class GetServlet extends HttpServlet {
     		resp.sendError(400);
     	} else {
     		if(service.equals("species")){
-    		getSpecies(resp);
-	    	} else {
+    			getSpecies(resp);
+	    	} else if(service.equals("variety"){
+	    		getVariety(resp, req.getPathInfo().substring(2));
+	    	}
+    		else {
 	    		resp.sendError(400);
 	    	}
 	    }
@@ -105,6 +108,48 @@ public class GetServlet extends HttpServlet {
 
 				PrintWriter write = resp.getWriter();
 				write.write(speciesArray);
+    	    	write.flush();
+    	    	write.close();
+			}else{
+				System.out.println("No results");
+				resp.sendError(400);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("Database connection problem");
+			throw new ServletException("DB Connection problem.");
+		}finally{
+			try {
+				rs.close();
+				ps.close();
+			} catch (SQLException e) {
+				System.out.println("SQLException in closing PreparedStatement or ResultSet");
+			}
+
+		}
+    }
+
+    private void getVariety(HttpServletResponse resp, String species_id) throws ServletException, IOException {
+    	Connection con = (Connection)getServletContext().getAttribute("DBConnection");
+    	PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			ps = con.prepareStatement("select * from species where species_id=?");
+			ps.setString(1, species_id);
+			rs = ps.executeQuery();
+			String varietyArray = "{";
+			if(rs != null && rs.next()){
+				do{
+					varietyArray += "\"" + rs.getString("variety_id") + "\":\"" + rs.getString("variety") + "\"";
+					if(!rs.isLast()){
+						varietyArray += ",";
+					}
+
+				} while(rs.next());
+				varietyArray += "}";
+
+				PrintWriter write = resp.getWriter();
+				write.write(varietyArray);
     	    	write.flush();
     	    	write.close();
 			}else{
