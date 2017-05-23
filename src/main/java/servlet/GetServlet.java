@@ -74,20 +74,10 @@ public class GetServlet extends HttpServlet {
         			} catch (SQLException e) {
         				System.out.println("SQLException in closing PreparedStatement or ResultSet");
         			}
-
-        		}
-
-
-        		if(username.equals("Bonnie") && password.equals("12345")){
-        			write.write("Got to test route!");
-        	    	write.flush();
-        	    	write.close();
-        		} else {
-        			resp.sendError(400);
         		}
         	}
     	} catch (SignatureException e) {
-			resp.sendError(400);
+			return false;
     	}
     }
 
