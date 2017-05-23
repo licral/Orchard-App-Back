@@ -39,8 +39,35 @@ public class GetServlet extends HttpServlet {
     	}
     }
 
-    private void getSpecies(HttpServletResponse resp){
-    	System.out.println("Getting species");
+    private void getSpecies(HttpServletResponse resp) throws ServletException{
+    	Connection con = (Connection)getServletContext().getAttribute("DBConnection");
+    	PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			ps = con.prepareStatement("select species from species");
+			rs = ps.executeQuery();
+			if(rs != null && rs.next()){
+				while(!rs.isLast()){
+					System.out.println(rs.getString("species"));
+					rs.next();
+				}
+			}else{
+				System.out.println("No results");
+				resp.sendError(400);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("Database connection problem");
+			throw new ServletException("DB Connection problem.");
+		}finally{
+			try {
+				rs.close();
+				ps.close();
+			} catch (SQLException e) {
+				System.out.println("SQLException in closing PreparedStatement or ResultSet");
+			}
+
+		}
     }
 
 }
