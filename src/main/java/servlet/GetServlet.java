@@ -29,11 +29,12 @@ public class GetServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
     	String service = req.getPathInfo().substring(1);
-    	switch(service){
-    	case "species":
+
+    	if(service == null){
+    		resp.sendError(400);
+    	} else if(service.equals("species")){
     		getSpecies(resp);
-    		break;
-    	default:
+    	} else {
     		resp.sendError(400);
     	}
     }
