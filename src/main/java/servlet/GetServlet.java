@@ -26,7 +26,7 @@ import java.security.Key;
 public class GetServlet extends HttpServlet {
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
     	String service = req.getPathInfo().substring(1);
     	System.out.println(service);
