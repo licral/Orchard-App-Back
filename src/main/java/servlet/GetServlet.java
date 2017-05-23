@@ -76,7 +76,11 @@ public class GetServlet extends HttpServlet {
         		}
         	}
     	} catch (SignatureException e) {
+    		System.out.print(e.message);
 			return false;
+    	} catch (UnsupportedEncodingException e){
+    		System.out.print(e.message);
+    		return false;
     	}
     }
 
