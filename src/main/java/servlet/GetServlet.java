@@ -47,10 +47,9 @@ public class GetServlet extends HttpServlet {
 			ps = con.prepareStatement("select species from species");
 			rs = ps.executeQuery();
 			if(rs != null && rs.next()){
-				while(!rs.isLast()){
+				do{
 					System.out.println(rs.getString("species"));
-					rs.next();
-				}
+				} while(rs.next());
 			}else{
 				System.out.println("No results");
 				resp.sendError(400);
