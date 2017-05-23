@@ -29,8 +29,17 @@ public class GetServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
     	String service = req.getPathInfo().substring(1);
-    	System.out.println(service);
+    	switch(service){
+    	case "species":
+    		getSpecies(resp);
+    		break;
+    	default:
+    		resp.sendError(400);
+    	}
+    }
 
+    private void getSpecies(HttpServletResponse resp){
+    	console.log("Getting species");
     }
 
 }
