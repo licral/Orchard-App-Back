@@ -39,7 +39,7 @@ public class GetServlet extends HttpServlet {
     	}
     }
 
-    private void getSpecies(HttpServletResponse resp) throws ServletException{
+    private void getSpecies(HttpServletResponse resp) throws ServletException, IOException {
     	Connection con = (Connection)getServletContext().getAttribute("DBConnection");
     	PreparedStatement ps = null;
 		ResultSet rs = null;
