@@ -95,7 +95,10 @@ public class GetServlet extends HttpServlet {
 			String speciesArray = "[";
 			if(rs != null && rs.next()){
 				do{
-					speciesArray += "\"" + rs.getString("species") + "\",";
+					speciesArray += "\"" + rs.getString("species");
+					if(!rs.isLast()){
+						speciesArray += "\","
+					}
 
 				} while(rs.next());
 				speciesArray += "]";
