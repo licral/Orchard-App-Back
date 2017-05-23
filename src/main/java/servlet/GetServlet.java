@@ -30,12 +30,64 @@ public class GetServlet extends HttpServlet {
             throws ServletException, IOException {
     	String service = req.getPathInfo().substring(1);
 
-    	if(service == null){
+    	if(service == null || !isAuthorised(req.getHeader("Authorization"))){
     		resp.sendError(400);
-    	} else if(service.equals("species")){
-    		getSpecies(resp);
     	} else {
-    		resp.sendError(400);
+    		if(service.equals("species")){
+    		getSpecies(resp);
+	    	} else {
+	    		resp.sendError(400);
+	    	}
+	    }
+    }
+
+    private boolean isAuthorised(String token) throws ServletException{
+    	try{
+    		Claims claims = Jwts.parser().setSigningKey("secret".getBytes("UTF-8")).parseClaimsJws(token).getBody();
+
+    		String username = claims.get("username").toString();
+
+    		if(username == null){
+        		return false;
+        	} else {
+        		Connection con = (Connection)getServletContext().getAttribute("DBConnection");
+            	PreparedStatement ps = null;
+        		ResultSet rs = null;
+        		try {
+        			ps = con.prepareStatement("select organisation_id from users where token=?");
+        			ps.setString(1, token);
+        			rs = ps.executeQuery();
+        			if(rs != null && rs.next()){
+        				return username.equals(rs.getString("organisation_id"));
+        			}else{
+        				System.out.println("No results");
+        				return false;
+        			}
+        		} catch (SQLException e) {
+        			e.printStackTrace();
+        			System.out.println("Database connection problem");
+        			throw new ServletException("DB Connection problem.");
+        		}finally{
+        			try {
+        				rs.close();
+        				ps.close();
+        			} catch (SQLException e) {
+        				System.out.println("SQLException in closing PreparedStatement or ResultSet");
+        			}
+
+        		}
+
+
+        		if(username.equals("Bonnie") && password.equals("12345")){
+        			write.write("Got to test route!");
+        	    	write.flush();
+        	    	write.close();
+        		} else {
+        			resp.sendError(400);
+        		}
+        	}
+    	} catch (SignatureException e) {
+			resp.sendError(400);
     	}
     }
 
@@ -53,7 +105,11 @@ public class GetServlet extends HttpServlet {
 
 				} while(rs.next());
 				speciesArray += "]";
-				System.out.println(speciesArray);
+
+				PrintWriter write = resp.getWriter();
+				write.write(speciesArray);
+    	    	write.flush();
+    	    	write.close();
 			}else{
 				System.out.println("No results");
 				resp.sendError(400);
