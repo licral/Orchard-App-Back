@@ -15,9 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.impl.crypto.MacProvider;
-import java.security.Key;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.SignatureException;
 
 @WebServlet(
         name = "GetServlet",
