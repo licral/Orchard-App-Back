@@ -90,18 +90,18 @@ public class GetServlet extends HttpServlet {
     	PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
-			ps = con.prepareStatement("select species from species");
+			ps = con.prepareStatement("select * from species");
 			rs = ps.executeQuery();
-			String speciesArray = "[";
+			String speciesArray = "{";
 			if(rs != null && rs.next()){
 				do{
-					speciesArray += "\"" + rs.getString("species") + "\"";
+					speciesArray += "\"" + rs.getString("species_id") + "\":\"" + rs.getString("species") + "\"";
 					if(!rs.isLast()){
 						speciesArray += ",";
 					}
 
 				} while(rs.next());
-				speciesArray += "]";
+				speciesArray += "}";
 
 				PrintWriter write = resp.getWriter();
 				write.write(speciesArray);
