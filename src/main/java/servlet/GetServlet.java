@@ -39,7 +39,7 @@ public class GetServlet extends HttpServlet {
     }
 
     private void getSpecies(HttpServletResponse resp){
-    	console.log("Getting species");
+    	System.out.println("Getting species");
     }
 
 }
