@@ -47,7 +47,6 @@ public class CheckServlet extends HttpServlet {
                 ps.setString(1, plant_id);
                 rs = ps.executeQuery();
                 if(rs != null && rs.next()){
-                    System.out.println("Is Registered");
                     resp.setStatus(200);
                 }else{
                     System.out.println("No results");
