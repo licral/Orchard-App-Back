@@ -1,0 +1,69 @@
+===============
+DATABASE SCHEMA
+===============
+
+#USERS
+organisation_id	| password	| organisation	| token
+----------------+---------------+---------------+-------------
+varchar(255)	| varchar(255)	| varchar(255)	| varchar(255)
+PRIMARY KEY	| NOT NULL	| NOT NULL	| UNIQUE
+
+=====
+
+#SPECIES
+species_id	| species
+----------------+-------------
+serial		| varchar(255)
+PRIMARY KEY	| NOT NULL
+
+======
+
+#VARIETY
+variety_id	| variety	| species_id
+----------------+---------------+-----------
+serial		| varchar(255)	| int
+PRIMARY KEY	| NOT NULL	| NOT NULL
+
+=====
+
+#PLANT_RECORD
+plant_id	| visual_tag	| variety_id	| organisation_id	| longitude	| latitude	| date		| notes
+----------------+---------------+---------------+-----------------------+---------------+---------------+---------------+-------------
+varchar(255)	| varchar(255)	| int		| varchar(255)		| int		| int		| date		| varchar(255)
+PRIMARY KEY	| 		| NOT NULL	| NOT NULL		| NOT NULL	| NOT NULL	| NOT NULL	|
+
+=====
+
+#ACTIVITIES
+activity_id			| activity_type	| organisation_id	| plant_id	| date		| time		| notes
+--------------------------------+---------------+-----------------------+---------------+---------------+---------------+-------------
+Serial				| varchar(255)	| varchar(255)		| varchar(255)	| date		| time		| varchar(255)
+PRIMARY KEY			| NOT NULL	| NOT NULL		| NOT NULL	| NOT NULL	| NOT NULL	|
+CHECK (activity_id >= 0)	|		|			|		|		|		|
+
+=====
+
+#ACTIVITY_FERTILISER
+activity_id			| product	| rate
+--------------------------------+---------------+-----------------
+int				| varchar(255)	| int
+PRIMARY KEY			| NOT NULL	| NOT NULL
+CHECK (activity_id >= 0)	|		| CHECK (rate > 0)
+
+=====
+
+#ACTIVITY_CHEMICAL
+activity_id			| product	| rate
+--------------------------------+---------------+-----------------
+int				| varchar(255)	| int
+PRIMARY KEY			| NOT NULL	| NOT NULL
+CHECK (activity_id >= 0)	|		| CHECK (rate > 0)
+
+=====
+
+#ACTIVITY_HARVEST
+activity_id			| weight
+--------------------------------+-------
+int				| float
+PRIMARY KEY			| NOT NULL
+CHECK (activity_id >= 0)	| CHECK (rate > 0)
