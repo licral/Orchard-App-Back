@@ -144,7 +144,7 @@ public class GetServlet extends HttpServlet {
     	PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
-			ps = con.prepareStatement("select * from species where species_id=?");
+			ps = con.prepareStatement("select * from variety where species_id=?");
 			ps.setInt(1, species_id);
 			rs = ps.executeQuery();
 			String varietyArray = "{";
