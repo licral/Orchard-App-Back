@@ -30,7 +30,7 @@ public class GetServlet extends HttpServlet {
             throws ServletException, IOException {
     	String service = req.getPathInfo().substring(1);
 
-    	String[] params = req.getPathInfo().split('/');
+    	String[] params = req.getPathInfo().split("/");
     	console.log(params);
 
     	if(service == null || !isAuthorised(req.getHeader("Authorization"))){
