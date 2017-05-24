@@ -43,6 +43,14 @@ CHECK (activity_id >= 0)	|		|			|		|		|		|
 
 =====
 
+#ACTIVITY_TYPES
+type_id		| activity_type
+----------------+--------------
+Serial		| varchar(255)
+PRIMARY KEY	| NOT NULL
+
+=====
+
 #ACTIVITY_FERTILISER
 activity_id			| product	| rate
 --------------------------------+---------------+-----------------

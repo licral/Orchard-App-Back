@@ -47,6 +47,8 @@ public class GetServlet extends HttpServlet {
 	    			System.out.println(e.getMessage());
 	    			resp.sendError(400);
 	    		}
+	    	} else if(service.equals("activities")){
+	    		getActivities(resp);
 	    	}
     		else {
 	    		resp.sendError(400);
@@ -160,6 +162,47 @@ public class GetServlet extends HttpServlet {
 
 				PrintWriter write = resp.getWriter();
 				write.write(varietyArray);
+    	    	write.flush();
+    	    	write.close();
+			}else{
+				System.out.println("No results");
+				resp.sendError(400);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("Database connection problem");
+			throw new ServletException("DB Connection problem.");
+		}finally{
+			try {
+				rs.close();
+				ps.close();
+			} catch (SQLException e) {
+				System.out.println("SQLException in closing PreparedStatement or ResultSet");
+			}
+
+		}
+    }
+
+    private void getActivities(HttpServletResponse resp) throws ServletException, IOException {
+    	Connection con = (Connection)getServletContext().getAttribute("DBConnection");
+    	PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			ps = con.prepareStatement("select * from activity_types");
+			rs = ps.executeQuery();
+			String activityArray = "{";
+			if(rs != null && rs.next()){
+				do{
+					activityArray += "\"" + rs.getString("type_id") + "\":\"" + rs.getString("activity_type") + "\"";
+					if(!rs.isLast()){
+						activityArray += ",";
+					}
+
+				} while(rs.next());
+				activityArray += "}";
+
+				PrintWriter write = resp.getWriter();
+				write.write(activityArray);
     	    	write.flush();
     	    	write.close();
 			}else{
