@@ -44,63 +44,48 @@ public class RegisterServlet extends HttpServlet {
     			int variety_id = Integer.parseInt(req.getParameter("variety_id"));
     			float longitude = Float.parseFloat(req.getParameter("longitude"));
     			float latitude = Float.parseFloat(req.getParameter("latitude"));
-    			try{
-    				Date date = Date.valueOf(req.getParameter("date"));
-    				System.out.println(date);
-    			} catch (IllegalArgumentException e){
-    				System.out.println(e.getMessage());
-    				resp.sendError(400);
-    			}
+    			Date date = Date.valueOf(req.getParameter("date"));
 
-				// Connection con = (Connection)getServletContext().getAttribute("DBConnection");
-		  //   	PreparedStatement ps = null;
-				// ResultSet rs = null;
-				// try {
-				// 	ps = con.prepareStatement("insert into plant_record (plant_id, visual_tag, variety_id, organisation_id, longitude, latitude, date, notes) values (?, ?, ?, ?, ?, ?, ?)");
-				// 	ps.setString(1, plant_id);
-				// 	ps.setString(2, visual_tag);
-				// 	ps.setInt(3, variety_id);
-				// 	ps.setString(4, organisation_id);
-				// 	ps.setInt(5, longitude);
-				// 	ps.setInt(6, latitude);
-				// 	ps.setDate(7, )
-				// 	rs = ps.executeQuery();
-				// 	String speciesArray = "{";
-				// 	if(rs != null && rs.next()){
-				// 		do{
-				// 			speciesArray += "\"" + rs.getString("species_id") + "\":\"" + rs.getString("species") + "\"";
-				// 			if(!rs.isLast()){
-				// 				speciesArray += ",";
-				// 			}
+				Connection con = (Connection)getServletContext().getAttribute("DBConnection");
+		    	PreparedStatement ps = null;
+				ResultSet rs = null;
+				try {
+					ps = con.prepareStatement("insert into plant_record (plant_id, visual_tag, variety_id, organisation_id, longitude, latitude, date, notes) values (?, ?, ?, ?, ?, ?, ?, ?)");
+					ps.setString(1, plant_id);
+					ps.setString(2, visual_tag);
+					ps.setInt(3, variety_id);
+					ps.setString(4, organisation_id);
+					ps.setFloat(5, longitude);
+					ps.setFloat(6, latitude);
+					ps.setDate(7, date);
+					ps.setString(8, notes);
+					rs = ps.executeQuery();
+					if(rs != null && rs.next()){
+						System.out.println(rs.getString(0));
+					}else{
+						System.out.println("No results");
+						resp.sendError(400);
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+					System.out.println("Database connection problem");
+					throw new ServletException("DB Connection problem.");
+				}finally{
+					try {
+						rs.close();
+						ps.close();
+					} catch (SQLException e) {
+						System.out.println("SQLException in closing PreparedStatement or ResultSet");
+					}
 
-				// 		} while(rs.next());
-				// 		speciesArray += "}";
-
-				// 		PrintWriter write = resp.getWriter();
-				// 		write.write(speciesArray);
-		  //   	    	write.flush();
-		  //   	    	write.close();
-				// 	}else{
-				// 		System.out.println("No results");
-				// 		resp.sendError(400);
-				// 	}
-				// } catch (SQLException e) {
-				// 	e.printStackTrace();
-				// 	System.out.println("Database connection problem");
-				// 	throw new ServletException("DB Connection problem.");
-				// }finally{
-				// 	try {
-				// 		rs.close();
-				// 		ps.close();
-				// 	} catch (SQLException e) {
-				// 		System.out.println("SQLException in closing PreparedStatement or ResultSet");
-				// 	}
-
-				// }
+				}
     		} catch (NumberFormatException e){
     			System.out.println(e.getMessage());
     			resp.sendError(400);
-    		}
+    		} catch (IllegalArgumentException e){
+				System.out.println(e.getMessage());
+				resp.sendError(400);
+			}
 	    }
     }
 
