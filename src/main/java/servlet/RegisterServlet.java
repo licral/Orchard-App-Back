@@ -48,7 +48,6 @@ public class RegisterServlet extends HttpServlet {
 
 				Connection con = (Connection)getServletContext().getAttribute("DBConnection");
 		    	PreparedStatement ps = null;
-				ResultSet rs = null;
 				try {
 					ps = con.prepareStatement("insert into plant_record (plant_id, visual_tag, variety_id, organisation_id, longitude, latitude, date, notes) values (?, ?, ?, ?, ?, ?, ?, ?)");
 					ps.setString(1, plant_id);
@@ -59,20 +58,14 @@ public class RegisterServlet extends HttpServlet {
 					ps.setFloat(6, latitude);
 					ps.setDate(7, date);
 					ps.setString(8, notes);
-					rs = ps.executeQuery();
-					if(rs != null && rs.next()){
-						System.out.println(rs.getString(0));
-					}else{
-						System.out.println("No results");
-						resp.sendError(400);
-					}
+					ps.executeQuery();
+					resp.setStatus(200);
 				} catch (SQLException e) {
 					e.printStackTrace();
 					System.out.println("Database connection problem");
 					throw new ServletException("DB Connection problem.");
 				}finally{
 					try {
-						rs.close();
 						ps.close();
 					} catch (SQLException e) {
 						System.out.println("SQLException in closing PreparedStatement or ResultSet");
