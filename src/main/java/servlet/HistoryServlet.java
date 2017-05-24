@@ -108,7 +108,7 @@ public class HistoryServlet extends HttpServlet {
             String activityArray = "{";
             if(rs != null && rs.next()){
                 do{
-                    activityArray += "\"" + rs.getInt("activity_id") + "\":{\"plant_id\":\"" + rs.getString("plant_id") + "\", \"date\":\"" + rs.getDate("date") + "\", \"time\":\"" + rs.getTime("time") + "\", \"activity_id\":\"" + rs.getTime("activity_id") + "\", \"activity_type\":\"" + rs.getTime("activity_type") + "\", \"species\":\"" + rs.getTime("species") + "\"}";
+                    activityArray += "\"" + rs.getInt("activity_id") + "\":{\"plant_id\":\"" + rs.getString("plant_id") + "\", \"date\":\"" + rs.getDate("date") + "\", \"time\":\"" + rs.getTime("time") + "\", \"activity_id\":\"" + rs.getInt("activity_id") + "\", \"activity_type\":\"" + rs.getString("activity_type") + "\", \"species\":\"" + rs.getString("species") + "\"}";
                     if(!rs.isLast()){
                         activityArray += ",";
                     }
