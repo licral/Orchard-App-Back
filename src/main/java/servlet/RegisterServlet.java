@@ -42,8 +42,8 @@ public class RegisterServlet extends HttpServlet {
     		String notes = req.getParameter("notes");
     		try{
     			int variety_id = Integer.parseInt(req.getParameter("variety_id"));
-    			int longitude = Integer.parseInt(req.getParameter("longitude"));
-    			int latitude = Integer.parseInt(req.getParameter("latitude"));
+    			float longitude = Float.parseFloat(req.getParameter("longitude"));
+    			float latitude = Float.parseFloat(req.getParameter("latitude"));
     			try{
     				Date date = Date.valueOf(req.getParameter("date"));
     				System.out.println(date);

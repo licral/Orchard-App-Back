@@ -29,7 +29,7 @@ PRIMARY KEY	| NOT NULL	| NOT NULL
 #PLANT_RECORD
 plant_id	| visual_tag	| variety_id	| organisation_id	| longitude	| latitude	| date		| notes
 ----------------+---------------+---------------+-----------------------+---------------+---------------+---------------+-------------
-varchar(255)	| varchar(255)	| int		| varchar(255)		| int		| int		| date		| varchar(255)
+varchar(255)	| varchar(255)	| int		| varchar(255)		| float		| float		| date		| varchar(255)
 PRIMARY KEY	| 		| NOT NULL	| NOT NULL		| NOT NULL	| NOT NULL	| NOT NULL	|
 
 =====
