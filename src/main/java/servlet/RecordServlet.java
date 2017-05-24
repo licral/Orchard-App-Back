@@ -131,7 +131,7 @@ public class RecordServlet extends HttpServlet {
                 ps.execute();
 
                 ps = con.prepareStatement("select last_value from activities_activity_id_seq");
-                rs = ps.executeQuery;
+                rs = ps.executeQuery();
                 if(rs != null && rs.next()){
                     int lastId = rs.getInt("last_value");
                     System.out.println("Last Id: " + lastId);
@@ -151,6 +151,7 @@ public class RecordServlet extends HttpServlet {
             }finally{
                 try {
                     ps.close();
+                    rs.close();
                 } catch (SQLException e) {
                     System.out.println("SQLException in closing PreparedStatement or ResultSet");
                 }
