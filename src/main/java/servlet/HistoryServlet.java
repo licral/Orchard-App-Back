@@ -34,50 +34,17 @@ public class HistoryServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-    	if(!isAuthorised(req.getHeader("Authorization"))){
-            System.out.println("Incorrect login");
+        String[] params = req.getPathInfo().split("/");
+        String activity = params[1];
+
+    	if(activity == null || !isAuthorised(req.getHeader("Authorization"))){
     		resp.sendError(400);
     	} else {
-            System.out.println("Got to history");
-
-            // Connection con = (Connection)getServletContext().getAttribute("DBConnection");
-            // PreparedStatement ps = null;
-            // ResultSet rs = null;
-            // try {
-            //     ps = con.prepareStatement("select activities.plant_id, activities.date, activities.time, activity_types.activity_type, activities.notes from activities left join activity_types on activities.type_id=activity_types.type_id where activities.organisation_id=? order by activities.date, activities.time DESC LIMIT 10");
-            //     rs = ps.executeQuery();
-            //     String activityArray = "{";
-            //     if(rs != null && rs.next()){
-            //         do{
-            //             activityArray += "\"" + rs.getString("type_id") + "\":\"" + rs.getString("activity_type") + "\"";
-            //             if(!rs.isLast()){
-            //                 activityArray += ",";
-            //             }
-
-            //         } while(rs.next());
-            //         activityArray += "}";
-
-            //         PrintWriter write = resp.getWriter();
-            //         write.write(activityArray);
-            //         write.flush();
-            //         write.close();
-            //     }else{
-            //         System.out.println("No results");
-            //         resp.sendError(400);
-            //     }
-            // } catch (SQLException e) {
-            //     e.printStackTrace();
-            //     System.out.println("Database connection problem");
-            //     throw new ServletException("DB Connection problem.");
-            // }finally{
-            //     try {
-            //         rs.close();
-            //         ps.close();
-            //     } catch (SQLException e) {
-            //         System.out.println("SQLException in closing PreparedStatement or ResultSet");
-            //     }
-
-            // }
+            if(activity.equals("all")){
+                getAllActivities(resp);
+            } else {
+                //handle individual activities
+            }
 	    }
     }
 
@@ -128,5 +95,47 @@ public class HistoryServlet extends HttpServlet {
     		System.out.print(e.getMessage());
     		return false;
     	}
+    }
+
+    private void getAllActivities(HttpServletResponse resp) throws ServletException, IOException{
+        Connection con = (Connection)getServletContext().getAttribute("DBConnection");
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            ps = con.prepareStatement("select activities.activity_id, activities.plant_id, activities.date, activities.time, activity_types.activity_type from activities left join activity_types on activities.type_id=activity_types.type_id where activities.organisation_id=? order by activities.date, activities.time DESC LIMIT 10");
+            ps.setString(1, organisation_id);
+            rs = ps.executeQuery();
+            String activityArray = "{";
+            if(rs != null && rs.next()){
+                do{
+                    activityArray += "\"" + rs.getInt("activity_id") + "\":{\"plant_id\":\"" + rs.getString("plant_id") + "\", \"date\":\"" + rs.getDate("date") + "\"}";
+                    if(!rs.isLast()){
+                        activityArray += ",";
+                    }
+
+                } while(rs.next());
+                activityArray += "}";
+
+                PrintWriter write = resp.getWriter();
+                write.write(activityArray);
+                write.flush();
+                write.close();
+            }else{
+                System.out.println("No results");
+                resp.sendError(400);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Database connection problem");
+            throw new ServletException("DB Connection problem.");
+        }finally{
+            try {
+                rs.close();
+                ps.close();
+            } catch (SQLException e) {
+                System.out.println("SQLException in closing PreparedStatement or ResultSet");
+            }
+
+        }
     }
 }
