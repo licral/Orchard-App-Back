@@ -102,13 +102,28 @@ public class HistoryServlet extends HttpServlet {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            ps = con.prepareStatement("select activities.activity_id, activities.plant_id, activities.date, activities.time, activity_types.activity_type from activities left join activity_types on activities.type_id=activity_types.type_id where activities.organisation_id=? order by activities.date, activities.time DESC LIMIT 10");
+            ps = con.prepareStatement("
+                select g.species, h.activity_id, h.plant_id, h.date, h.time, h.activity_type
+                from species g
+                inner join (select e.species_id as species_id, f.activity_id as activity_id, f.plant_id as plant_id, f.date as date, f.time as time, f.activity_type as activity_type
+                from variety e
+                inner join (select c.variety_id as variety_id, d.activity_id as activity_id, d.plant_id as plant_id, d.date as date, d.time as time, d.activity_type as activity_type 
+                from plant_record c
+                inner join (select a.activity_id as activity_id, a.plant_id as plant_id, a.date as date, a.time as time, b.activity_type as activity_type
+                from activities a
+                inner join activity_types b
+                on a.type_id=b.type_id 
+                where a.organisation_id=? 
+                order by a.date, a.time DESC LIMIT 10) d
+                on c.plant_id=d.plant_id) f
+                on e.variety_id=f.variety_id) h
+                on g.species_id=h.species_id");
             ps.setString(1, organisation_id);
             rs = ps.executeQuery();
             String activityArray = "{";
             if(rs != null && rs.next()){
                 do{
-                    activityArray += "\"" + rs.getInt("activity_id") + "\":{\"plant_id\":\"" + rs.getString("plant_id") + "\", \"date\":\"" + rs.getDate("date") + "\"}";
+                    activityArray += "\"" + rs.getInt("activity_id") + "\":{\"plant_id\":\"" + rs.getString("plant_id") + "\", \"date\":\"" + rs.getDate("date") + "\", \"time\":\"" + rs.getTime("time") + "\", \"activity_id\":\"" + rs.getTime("activity_id") + "\", \"activity_type\":\"" + rs.getTime("activity_type") + "\", \"species\":\"" + rs.getTime("species") + "\"}";
                     if(!rs.isLast()){
                         activityArray += ",";
                     }
