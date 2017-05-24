@@ -167,16 +167,16 @@ public class RecordServlet extends HttpServlet {
     private void recordFertiliser(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-        String activity_id = req.getParameter("activity_id");
         String product = req.getParameter("product");
         try{
+            int activity_id = parseInt(req.getParameter("activity_id"));
             int rate = Integer.parseInt(req.getParameter("rate"));
 
             Connection con = (Connection)getServletContext().getAttribute("DBConnection");
             PreparedStatement ps = null;
             try {
                 ps = con.prepareStatement("insert into activity_fertiliser (activity_id, product, rate) values (?, ?, ?)");
-                ps.setString(1, activity_id);
+                ps.setInt(1, activity_id);
                 ps.setString(2, product);
                 ps.setInt(3, rate);
                 ps.execute();
