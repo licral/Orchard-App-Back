@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.io.PrintWriter;
 
+import java.util.Arrays;
+
 import java.lang.NumberFormatException;
 import java.lang.IllegalArgumentException;
 
@@ -34,6 +36,7 @@ public class CheckServlet extends HttpServlet {
             throws ServletException, IOException {
 
     	String[] params = req.getPathInfo().split("/");
+        System.out.println(Arrays.toString(params));
         String plant_id = params[2];
 
         if(plant_id == null || !isAuthorised(req.getHeader("Authorization"))){
