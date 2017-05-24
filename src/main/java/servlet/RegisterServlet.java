@@ -24,7 +24,7 @@ import io.jsonwebtoken.SignatureException;
         urlPatterns = {"/register"}
     )
 public class RegisterServlet extends HttpServlet {
-	private String username;
+	private String organisation_id;
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
@@ -33,7 +33,8 @@ public class RegisterServlet extends HttpServlet {
     	if(!isAuthorised(req.getHeader("Authorization"))){
     		resp.sendError(400);
     	} else {
-    		System.out.println(username);
+    		String plant_id = req.getParameter("plant_id");
+    		System.out.println(plant_id);
 	    }
     }
 
@@ -55,7 +56,7 @@ public class RegisterServlet extends HttpServlet {
         			rs = ps.executeQuery();
         			if(rs != null && rs.next()){
         				if(username.equals(rs.getString("organisation_id"))){
-        					this.username = username;
+        					this.organisation_id = username;
         					return true;
         				} else {
         					return false;
