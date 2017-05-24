@@ -58,7 +58,7 @@ public class RegisterServlet extends HttpServlet {
 					ps.setFloat(6, latitude);
 					ps.setDate(7, date);
 					ps.setString(8, notes);
-					ps.executeQuery();
+					ps.execute();
 					resp.setStatus(200);
 				} catch (SQLException e) {
 					e.printStackTrace();
