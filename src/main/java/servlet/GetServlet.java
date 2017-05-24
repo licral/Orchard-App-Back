@@ -31,7 +31,7 @@ public class GetServlet extends HttpServlet {
     	String service = req.getPathInfo().substring(1);
 
     	String[] params = req.getPathInfo().split("/");
-    	console.log(params);
+    	System.out.println(params);
 
     	if(service == null || !isAuthorised(req.getHeader("Authorization"))){
     		resp.sendError(400);
