@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Date;
+import java.sql.Time;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -34,53 +35,27 @@ public class RecordServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-    	if(!isAuthorised(req.getHeader("Authorization"))){
-    		resp.sendError(400);
-    	} else {
-            System.out.println("Got to record servlet!");
-   //  		String plant_id = req.getParameter("plant_id");
-   //  		String visual_tag = req.getParameter("visual_tag");
-   //  		String notes = req.getParameter("notes");
-   //  		try{
-   //  			int variety_id = Integer.parseInt(req.getParameter("variety_id"));
-   //  			float longitude = Float.parseFloat(req.getParameter("longitude"));
-   //  			float latitude = Float.parseFloat(req.getParameter("latitude"));
-   //  			Date date = Date.valueOf(req.getParameter("date"));
+        String[] params = req.getPathInfo().split("/");
+        String activity = params[1];
 
-			// 	Connection con = (Connection)getServletContext().getAttribute("DBConnection");
-		 //    	PreparedStatement ps = null;
-			// 	try {
-			// 		ps = con.prepareStatement("insert into plant_record (plant_id, visual_tag, variety_id, organisation_id, longitude, latitude, date, notes) values (?, ?, ?, ?, ?, ?, ?, ?)");
-			// 		ps.setString(1, plant_id);
-			// 		ps.setString(2, visual_tag);
-			// 		ps.setInt(3, variety_id);
-			// 		ps.setString(4, organisation_id);
-			// 		ps.setFloat(5, longitude);
-			// 		ps.setFloat(6, latitude);
-			// 		ps.setDate(7, date);
-			// 		ps.setString(8, notes);
-			// 		ps.execute();
-			// 		resp.setStatus(200);
-			// 	} catch (SQLException e) {
-			// 		e.printStackTrace();
-			// 		System.out.println("Database connection problem");
-			// 		throw new ServletException("DB Connection problem.");
-			// 	}finally{
-			// 		try {
-			// 			ps.close();
-			// 		} catch (SQLException e) {
-			// 			System.out.println("SQLException in closing PreparedStatement or ResultSet");
-			// 		}
-
-			// 	}
-   //  		} catch (NumberFormatException e){
-   //  			System.out.println(e.getMessage());
-   //  			resp.sendError(400);
-   //  		} catch (IllegalArgumentException e){
-			// 	System.out.println(e.getMessage());
-			// 	resp.sendError(400);
-			// }
-	    }
+        if(activity == null || !isAuthorised(req.getHeader("Authorization"))){
+            resp.sendError(400);
+        } else {
+            if(activity.equals("general")){
+                recordGeneral(req, resp);
+            } else if(activity.equals("fertiliser")){
+                // do fertiliser
+            } else if(activity.equals("chemical")){
+                // do chemical
+            } else if(activity.equals("pruning")){
+                // do chemical
+            } else if(activity.equals("harvest")){
+                // do chemical
+            }
+            else {
+                resp.sendError(400);
+            }
+        }
     }
 
     private boolean isAuthorised(String token) throws ServletException{
@@ -130,5 +105,48 @@ public class RecordServlet extends HttpServlet {
     		System.out.print(e.getMessage());
     		return false;
     	}
+    }
+
+    private void recordGeneral(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+
+         String plant_id = req.getParameter("plant_id");
+         String notes = req.getParameter("notes");
+         try{
+             Date date = Date.valueOf(req.getParameter("date"));
+             Time time = Time.valueOf(req.getParameter("time"));
+             int type_id = Integer.parseInt(req.getParameter("type_id"));
+
+             Connection con = (Connection)getServletContext().getAttribute("DBConnection");
+             PreparedStatement ps = null;
+             try {
+                 ps = con.prepareStatement("insert into activities (organisation_id, plant_id, date, time, notes, type_id) values (?, ?, ?, ?, ?, ?)");
+                 ps.setString(1, organisation_id);
+                 ps.setString(2, plant_id);
+                 ps.setDate(3, date);
+                 ps.setTime(4, time);
+                 ps.setString(5, notes);
+                 ps.setInt(6, type_id);
+                 ps.execute();
+                 resp.setStatus(200);
+             } catch (SQLException e) {
+                 e.printStackTrace();
+                 System.out.println("Database connection problem");
+                 throw new ServletException("DB Connection problem.");
+             }finally{
+                 try {
+                     ps.close();
+                 } catch (SQLException e) {
+                     System.out.println("SQLException in closing PreparedStatement or ResultSet");
+                 }
+
+             }
+         } catch (NumberFormatException e){
+             System.out.println(e.getMessage());
+             resp.sendError(400);
+         } catch (IllegalArgumentException e){
+             System.out.println(e.getMessage());
+             resp.sendError(400);
+            }
     }
 }
