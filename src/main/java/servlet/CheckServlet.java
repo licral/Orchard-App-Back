@@ -30,12 +30,11 @@ import io.jsonwebtoken.SignatureException;
 public class CheckServlet extends HttpServlet {
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+    protected void doGET(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
     	String[] params = req.getPathInfo().split("/");
         String plant_id = params[2];
-        System.out.println(params);
 
         if(plant_id == null || !isAuthorised(req.getHeader("Authorization"))){
             resp.sendError(400);
