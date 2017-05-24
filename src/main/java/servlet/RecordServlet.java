@@ -48,7 +48,7 @@ public class RecordServlet extends HttpServlet {
             } else if(activity.equals("chemical")){
                 recordChemical(req, resp);
             } else if(activity.equals("harvest")){
-                // do harvest
+                recordHarvest(req, resp);
             }
             else {
                 resp.sendError(400);
