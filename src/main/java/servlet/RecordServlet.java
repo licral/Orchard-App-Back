@@ -169,7 +169,7 @@ public class RecordServlet extends HttpServlet {
 
         String product = req.getParameter("product");
         try{
-            int activity_id = parseInt(req.getParameter("activity_id"));
+            int activity_id = Integer.parseInt(req.getParameter("activity_id"));
             int rate = Integer.parseInt(req.getParameter("rate"));
 
             Connection con = (Connection)getServletContext().getAttribute("DBConnection");
