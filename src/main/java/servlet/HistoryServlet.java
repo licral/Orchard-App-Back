@@ -31,7 +31,7 @@ public class HistoryServlet extends HttpServlet {
 	private String organisation_id;
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
     	if(!isAuthorised(req.getHeader("Authorization"))){
