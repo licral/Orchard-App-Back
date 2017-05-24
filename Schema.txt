@@ -35,9 +35,9 @@ PRIMARY KEY	| 		| NOT NULL	| NOT NULL		| NOT NULL	| NOT NULL	| NOT NULL	|
 =====
 
 #ACTIVITIES
-activity_id			| activity_type	| organisation_id	| plant_id	| date		| time		| notes
+activity_id			| type_id	| organisation_id	| plant_id	| date		| time		| notes
 --------------------------------+---------------+-----------------------+---------------+---------------+---------------+-------------
-Serial				| varchar(255)	| varchar(255)		| varchar(255)	| date		| time		| varchar(255)
+Serial				| int		| varchar(255)		| varchar(255)	| date		| time		| varchar(255)
 PRIMARY KEY			| NOT NULL	| NOT NULL		| NOT NULL	| NOT NULL	| NOT NULL	|
 CHECK (activity_id >= 0)	|		|			|		|		|		|
 
