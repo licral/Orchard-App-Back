@@ -135,6 +135,7 @@ public class GetServlet extends HttpServlet {
     	if(species_id == null){
     		resp.sendError(400);
     	}
+    	System.out.println(species_id);
     	Connection con = (Connection)getServletContext().getAttribute("DBConnection");
     	PreparedStatement ps = null;
 		ResultSet rs = null;
