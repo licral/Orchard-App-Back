@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.io.PrintWriter;
 
-import java.util.Arrays;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -30,10 +28,9 @@ public class GetServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-    	String service = req.getPathInfo().substring(1);
 
     	String[] params = req.getPathInfo().split("/");
-    	System.out.println(Arrays.toString(params));
+    	String service = params[1];
 
     	if(service == null || !isAuthorised(req.getHeader("Authorization"))){
     		resp.sendError(400);
@@ -41,7 +38,7 @@ public class GetServlet extends HttpServlet {
     		if(service.equals("species")){
     			getSpecies(resp);
 	    	} else if(service.equals("variety")){
-	    		getVariety(resp, req.getPathInfo().substring(2));
+	    		getVariety(resp, params[2]);
 	    	}
     		else {
 	    		resp.sendError(400);
@@ -135,6 +132,9 @@ public class GetServlet extends HttpServlet {
     }
 
     private void getVariety(HttpServletResponse resp, String species_id) throws ServletException, IOException {
+    	if(species_id == null){
+    		resp.sendError(400);
+    	}
     	Connection con = (Connection)getServletContext().getAttribute("DBConnection");
     	PreparedStatement ps = null;
 		ResultSet rs = null;
