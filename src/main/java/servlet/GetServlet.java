@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.io.PrintWriter;
 
+import java.lang.NumberFormatException;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -38,7 +40,13 @@ public class GetServlet extends HttpServlet {
     		if(service.equals("species")){
     			getSpecies(resp);
 	    	} else if(service.equals("variety")){
-	    		getVariety(resp, params[2]);
+	    		try{
+	    			String species_id = Integer.parseInt(params[2]);
+	    			getVariety(resp, params[2]);
+	    		} catch (NumberFormatException e){
+	    			System.out.println(e.getMessage());
+	    			resp.sendError(400);
+	    		}
 	    	}
     		else {
 	    		resp.sendError(400);
@@ -131,17 +139,13 @@ public class GetServlet extends HttpServlet {
 		}
     }
 
-    private void getVariety(HttpServletResponse resp, String species_id) throws ServletException, IOException {
-    	if(species_id == null){
-    		resp.sendError(400);
-    	}
-    	System.out.println(species_id);
+    private void getVariety(HttpServletResponse resp, int species_id) throws ServletException, IOException {
     	Connection con = (Connection)getServletContext().getAttribute("DBConnection");
     	PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
 			ps = con.prepareStatement("select * from species where species_id=?");
-			ps.setString(1, species_id);
+			ps.setInt(1, species_id);
 			rs = ps.executeQuery();
 			String varietyArray = "{";
 			if(rs != null && rs.next()){
