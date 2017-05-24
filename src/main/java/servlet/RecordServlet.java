@@ -134,16 +134,15 @@ public class RecordServlet extends HttpServlet {
                 rs = ps.executeQuery();
                 if(rs != null && rs.next()){
                     int lastId = rs.getInt("last_value");
-                    System.out.println("Last Id: " + lastId);
+                 
+                    PrintWriter write = resp.getWriter();
+                    write.write("{\"id\":\"" + lastId + "\"}");
+                    write.flush();
+                    write.close();
                 }else{
                     System.out.println("No results");
                     resp.sendError(400);
                 }
-                 
-                // PrintWriter write = resp.getWriter();
-                // write.write(speciesArray);
-                // write.flush();
-                // write.close();
             } catch (SQLException e) {
                 e.printStackTrace();
                 System.out.println("Database connection problem");
