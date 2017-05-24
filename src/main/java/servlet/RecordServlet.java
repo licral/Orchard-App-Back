@@ -110,43 +110,57 @@ public class RecordServlet extends HttpServlet {
     private void recordGeneral(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-         String plant_id = req.getParameter("plant_id");
-         String notes = req.getParameter("notes");
-         try{
-             Date date = Date.valueOf(req.getParameter("date"));
-             Time time = Time.valueOf(req.getParameter("time"));
-             int type_id = Integer.parseInt(req.getParameter("type_id"));
+        String plant_id = req.getParameter("plant_id");
+        String notes = req.getParameter("notes");
+        try{
+            Date date = Date.valueOf(req.getParameter("date"));
+            Time time = Time.valueOf(req.getParameter("time"));
+            int type_id = Integer.parseInt(req.getParameter("type_id"));
 
-             Connection con = (Connection)getServletContext().getAttribute("DBConnection");
-             PreparedStatement ps = null;
-             try {
-                 ps = con.prepareStatement("insert into activities (organisation_id, plant_id, date, time, notes, type_id) values (?, ?, ?, ?, ?, ?)");
-                 ps.setString(1, organisation_id);
-                 ps.setString(2, plant_id);
-                 ps.setDate(3, date);
-                 ps.setTime(4, time);
-                 ps.setString(5, notes);
-                 ps.setInt(6, type_id);
-                 ps.execute();
-                 resp.setStatus(200);
-             } catch (SQLException e) {
-                 e.printStackTrace();
-                 System.out.println("Database connection problem");
-                 throw new ServletException("DB Connection problem.");
-             }finally{
-                 try {
-                     ps.close();
-                 } catch (SQLException e) {
-                     System.out.println("SQLException in closing PreparedStatement or ResultSet");
-                 }
+            Connection con = (Connection)getServletContext().getAttribute("DBConnection");
+            PreparedStatement ps = null;
+            ResultSet rs = null;
+            try {
+                ps = con.prepareStatement("insert into activities (organisation_id, plant_id, date, time, notes, type_id) values (?, ?, ?, ?, ?, ?)");
+                ps.setString(1, organisation_id);
+                ps.setString(2, plant_id);
+                ps.setDate(3, date);
+                ps.setTime(4, time);
+                ps.setString(5, notes);
+                ps.setInt(6, type_id);
+                ps.execute();
 
-             }
-         } catch (NumberFormatException e){
-             System.out.println(e.getMessage());
-             resp.sendError(400);
-         } catch (IllegalArgumentException e){
-             System.out.println(e.getMessage());
-             resp.sendError(400);
+                ps = con.prepareStatement("select last_value from activities_activity_id_seq");
+                rs = ps.executeQuery;
+                if(rs != null && rs.next()){
+                    int lastId = rs.getInt("last_value");
+                    System.out.println("Last Id: " + lastId);
+                }else{
+                    System.out.println("No results");
+                    resp.sendError(400);
+                }
+                 
+                // PrintWriter write = resp.getWriter();
+                // write.write(speciesArray);
+                // write.flush();
+                // write.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                System.out.println("Database connection problem");
+                throw new ServletException("DB Connection problem.");
+            }finally{
+                try {
+                    ps.close();
+                } catch (SQLException e) {
+                    System.out.println("SQLException in closing PreparedStatement or ResultSet");
+                }
             }
+        } catch (NumberFormatException e){
+            System.out.println(e.getMessage());
+            resp.sendError(400);
+        } catch (IllegalArgumentException e){
+            System.out.println(e.getMessage());
+            resp.sendError(400);
+        }
     }
 }
