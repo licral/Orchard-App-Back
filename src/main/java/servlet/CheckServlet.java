@@ -35,7 +35,7 @@ public class CheckServlet extends HttpServlet {
 
     	String[] params = req.getPathInfo().split("/");
         String plant_id = params[2];
-        System.out.println(plant_id);
+        System.out.println(params);
 
         if(plant_id == null || !isAuthorised(req.getHeader("Authorization"))){
             resp.sendError(400);
