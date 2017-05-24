@@ -46,7 +46,7 @@ public class RecordServlet extends HttpServlet {
             } else if(activity.equals("fertiliser")){
                 recordFertiliser(req, resp);
             } else if(activity.equals("chemical")){
-                // do chemical
+                recordChemical(req, resp);
             } else if(activity.equals("pruning")){
                 // do chemical
             } else if(activity.equals("harvest")){
@@ -176,6 +176,43 @@ public class RecordServlet extends HttpServlet {
             PreparedStatement ps = null;
             try {
                 ps = con.prepareStatement("insert into activity_fertiliser (activity_id, product, rate) values (?, ?, ?)");
+                ps.setInt(1, activity_id);
+                ps.setString(2, product);
+                ps.setInt(3, rate);
+                ps.execute();
+                resp.setStatus(200);
+            } catch (SQLException e) {
+                e.printStackTrace();
+                System.out.println("Database connection problem");
+                throw new ServletException("DB Connection problem.");
+            }finally{
+                try {
+                    ps.close();
+                } catch (SQLException e) {
+                    System.out.println("SQLException in closing PreparedStatement or ResultSet");
+                }
+            }
+        } catch (NumberFormatException e){
+            System.out.println(e.getMessage());
+            resp.sendError(400);
+        } catch (IllegalArgumentException e){
+            System.out.println(e.getMessage());
+            resp.sendError(400);
+        }
+    }
+
+    private void recordChemical(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+
+        String product = req.getParameter("product");
+        try{
+            int activity_id = Integer.parseInt(req.getParameter("activity_id"));
+            int rate = Integer.parseInt(req.getParameter("rate"));
+
+            Connection con = (Connection)getServletContext().getAttribute("DBConnection");
+            PreparedStatement ps = null;
+            try {
+                ps = con.prepareStatement("insert into activity_chemical (activity_id, product, rate) values (?, ?, ?)");
                 ps.setInt(1, activity_id);
                 ps.setString(2, product);
                 ps.setInt(3, rate);
