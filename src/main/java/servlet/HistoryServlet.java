@@ -35,6 +35,7 @@ public class HistoryServlet extends HttpServlet {
             throws ServletException, IOException {
 
     	if(!isAuthorised(req.getHeader("Authorization"))){
+            System.out.println("Incorrect login");
     		resp.sendError(400);
     	} else {
             System.out.println("Got to history");
