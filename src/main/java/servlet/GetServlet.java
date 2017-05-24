@@ -42,7 +42,7 @@ public class GetServlet extends HttpServlet {
 	    	} else if(service.equals("variety")){
 	    		try{
 	    			int species_id = Integer.parseInt(params[2]);
-	    			getVariety(resp, params[2]);
+	    			getVariety(resp, species_id);
 	    		} catch (NumberFormatException e){
 	    			System.out.println(e.getMessage());
 	    			resp.sendError(400);
