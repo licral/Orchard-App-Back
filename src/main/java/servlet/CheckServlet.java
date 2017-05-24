@@ -50,6 +50,7 @@ public class CheckServlet extends HttpServlet {
                 rs = ps.executeQuery();
                 if(rs != null && rs.next()){
                     System.out.println("Is Registered");
+                    resp.setStatus(200);
                 }else{
                     System.out.println("No results");
                     resp.sendError(400);
