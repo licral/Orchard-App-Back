@@ -30,7 +30,7 @@ import io.jsonwebtoken.SignatureException;
 public class CheckServlet extends HttpServlet {
 
     @Override
-    protected void doGET(HttpServletRequest req, HttpServletResponse resp)
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
     	String[] params = req.getPathInfo().split("/");
