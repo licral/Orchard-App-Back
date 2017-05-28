@@ -28,6 +28,7 @@ import io.jsonwebtoken.SignatureException;
         urlPatterns = {"/check/*"}
     )
 public class CheckServlet extends HttpServlet {
+    private String organisation_id;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -43,11 +44,15 @@ public class CheckServlet extends HttpServlet {
             PreparedStatement ps = null;
             ResultSet rs = null;
             try {
-                ps = con.prepareStatement("select * from plant_record where plant_id=?");
+                ps = con.prepareStatement("select organisation_id from plant_record where plant_id=?");
                 ps.setString(1, plant_id);
                 rs = ps.executeQuery();
                 if(rs != null && rs.next()){
-                    resp.setStatus(200);
+                    if(rs.getString("organisation_id").equals(organisation_id)){
+                        resp.setStatus(200);
+                    } else {
+                        resp.sendError(400);
+                    }
                 }else{
                     System.out.println("No results");
                     resp.sendError(400);
@@ -85,7 +90,12 @@ public class CheckServlet extends HttpServlet {
                     ps.setString(1, token);
                     rs = ps.executeQuery();
                     if(rs != null && rs.next()){
-                        return username.equals(rs.getString("organisation_id"));
+                        if(username.equals(rs.getString("organisation_id"))){
+                            this.organisation_id = username;
+                            return true;
+                        } else {
+                            return false;
+                        }
                     }else{
                         System.out.println("No results");
                         return false;
