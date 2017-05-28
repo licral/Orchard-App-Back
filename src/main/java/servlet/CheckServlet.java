@@ -51,7 +51,11 @@ public class CheckServlet extends HttpServlet {
                     if(rs.getString("organisation_id").equals(organisation_id)){
                         resp.setStatus(200);
                     } else {
-                        resp.sendError(400, "Plant ID has already been registered by another organisation");
+                        resp.setStatus(400);
+                        PrintWriter write = resp.getWriter();
+                        write.write("Plant ID has already been registered by another organisation.");
+                        write.flush();
+                        write.close();
                     }
                 }else{
                     PrintWriter write = resp.getWriter();
