@@ -49,10 +49,9 @@ public class CheckServlet extends HttpServlet {
                 rs = ps.executeQuery();
                 if(rs != null && rs.next()){
                     if(rs.getString("organisation_id").equals(organisation_id)){
-                        System.out.println("Equal: " + rs.getString("organisation_id").equals(organisation_id));
                         resp.setStatus(200);
                     } else {
-                        System.out.println("Not equal");
+                        System.out.println(resp.getStatus());
                         resp.sendError(400);
                     }
                 }else{
