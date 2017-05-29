@@ -46,3 +46,16 @@ inner join variety b
 on a.variety_id=b.variety_id
 where plant_id='plant12345') d
 on c.species_id=d.species_id
+
+Get Activity info
+
+select a.activity_id, a.type_id, a.plant_id, a.date, a.time, a.notes, b.product, b.rate, c.product, c.rate, d.weight
+from activities a
+left join activity_chemical b
+on a.activity_id=b.activity_id
+left join activity_fertiliser c
+on a.activity_id=c.activity_id
+left join activity_harvest d
+on a.activity_id=d.activity_id
+where a.activity_id=2
+order by a.date, a.time
