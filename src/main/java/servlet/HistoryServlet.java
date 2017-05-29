@@ -170,8 +170,11 @@ public class HistoryServlet extends HttpServlet {
                 write.flush();
                 write.close();
             }else{
-                System.out.println("No results");
-                resp.sendError(400);
+                resp.setStatus(400);
+                PrintWriter write = resp.getWriter();
+                write.write("No Results");
+                write.flush();
+                write.close();
             }
         } catch (SQLException e) {
             e.printStackTrace();
