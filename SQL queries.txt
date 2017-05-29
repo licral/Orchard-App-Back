@@ -11,10 +11,11 @@ from activities a
 inner join activity_types b
 on a.type_id=b.type_id 
 where a.organisation_id='test2' 
-order by a.date, a.time DESC LIMIT 10) d
+order by a.date DESC, a.time DESC LIMIT 10) d
 on c.plant_id=d.plant_id) f
 on e.variety_id=f.variety_id) h
 on g.species_id=h.species_id
+
 
 Get all activities for a plant
 
@@ -29,7 +30,19 @@ from activities a
 inner join activity_types b
 on a.type_id=b.type_id 
 where a.plant_id='plant54321' 
-order by a.date, a.time DESC) d
+order by a.date DESC, a.time DESC) d
 on c.plant_id=d.plant_id) f
 on e.variety_id=f.variety_id) h
 on g.species_id=h.species_id
+
+
+Get plant info
+
+select d.plant_id as plant_id, d.date as date, d.notes as notes, d.visual_tag as visual_tag, d.longitude as longitude, d.latitude as latitude, d.variety as variety, c.species as species
+from species c
+inner join (select a.plant_id as plant_id, a.date as date, a.notes as notes, a.visual_tag as visual_tag, a.longitude as longitude, a.latitude as latitude, b.variety as variety, b.species_id as species_id
+from plant_record a
+inner join variety b
+on a.variety_id=b.variety_id
+where plant_id='plant12345') d
+on c.species_id=d.species_id

@@ -49,6 +49,12 @@ public class GetServlet extends HttpServlet {
 	    		}
 	    	} else if(service.equals("activities")){
 	    		getActivities(resp);
+	    	} else if(service.equals("plant")){
+	    		if(params[2] == null){
+                    resp.sendError(400);
+                } else {
+                    getPlantInfo(resp, params[2]);
+                }
 	    	}
     		else {
 	    		resp.sendError(400);
@@ -224,4 +230,39 @@ public class GetServlet extends HttpServlet {
 		}
     }
 
+    private void getPlantInfo(HttpServletResponse resp, String plant_id) throws ServletException, IOException {
+    	Connection con = (Connection)getServletContext().getAttribute("DBConnection");
+    	PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			ps = con.prepareStatement("select d.plant_id as plant_id, d.date as date, d.notes as notes, d.visual_tag as visual_tag, d.longitude as longitude, d.latitude as latitude, d.variety as variety, c.species as species from species c inner join (select a.plant_id as plant_id, a.date as date, a.notes as notes, a.visual_tag as visual_tag, a.longitude as longitude, a.latitude as latitude, b.variety as variety, b.species_id as species_id from plant_record a inner join variety b on a.variety_id=b.variety_id where plant_id=?) d on c.species_id=d.species_id");
+			ps.setString(1, plant_id);
+			rs = ps.executeQuery();
+			String plantInfo = "{";
+			if(rs != null && rs.next()){
+				plantInfo += "\"plant_id\":\"" + rs.getString("plant_id") + "\", \"date\":\"" + rs.getDate("date") + "\", \"notes\":\"" + rs.getString("notes") + "\", \"visual_tag\":\"" + rs.getString("visual_tag") + "\", \"longitude\":\"" + rs.getDouble("longitude") + "\", \"latitude\":\"" + rs.getDouble("latitude") + "\", \"variety\":\"" + rs.getDouble("variety") + "\", \"species\":\"" + rs.getString("species") + "\"";
+				plantInfo += "}";
+
+				PrintWriter write = resp.getWriter();
+				write.write(plantInfo);
+    	    	write.flush();
+    	    	write.close();
+			}else{
+				System.out.println("No results");
+				resp.sendError(400);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("Database connection problem");
+			throw new ServletException("DB Connection problem.");
+		}finally{
+			try {
+				rs.close();
+				ps.close();
+			} catch (SQLException e) {
+				System.out.println("SQLException in closing PreparedStatement or ResultSet");
+			}
+
+		}
+    }
 }
