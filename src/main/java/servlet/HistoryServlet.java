@@ -42,7 +42,10 @@ public class HistoryServlet extends HttpServlet {
     	} else {
             if(activity.equals("all")){
                 getAllActivities(resp);
-            } else {
+            } else if(activity.equals("plant")){
+                getPlantHistory(resp, params[2]);
+            }
+            else {
                 //handle individual activities
             }
 	    }
@@ -137,5 +140,48 @@ public class HistoryServlet extends HttpServlet {
             }
 
         }
+    }
+
+    private void getPlantHistory(HttpServletResponse resp, String plant_id) throws ServletException, IOException{
+        System.out.println("Hit the plant history service");
+        // Connection con = (Connection)getServletContext().getAttribute("DBConnection");
+        // PreparedStatement ps = null;
+        // ResultSet rs = null;
+        // try {
+        //     ps = con.prepareStatement("select g.species, h.activity_id, h.plant_id, h.date, h.time, h.activity_type from species g inner join (select e.species_id as species_id, f.activity_id as activity_id, f.plant_id as plant_id, f.date as date, f.time as time, f.activity_type as activity_type from variety e inner join (select c.variety_id as variety_id, d.activity_id as activity_id, d.plant_id as plant_id, d.date as date, d.time as time, d.activity_type as activity_type from plant_record c inner join (select a.activity_id as activity_id, a.plant_id as plant_id, a.date as date, a.time as time, b.activity_type as activity_type from activities a inner join activity_types b on a.type_id=b.type_id where a.organisation_id=? order by a.date, a.time DESC LIMIT 10) d on c.plant_id=d.plant_id) f on e.variety_id=f.variety_id) h on g.species_id=h.species_id");
+        //     ps.setString(1, organisation_id);
+        //     rs = ps.executeQuery();
+        //     String activityArray = "{";
+        //     if(rs != null && rs.next()){
+        //         do{
+        //             activityArray += "\"" + rs.getInt("activity_id") + "\":{\"plant_id\":\"" + rs.getString("plant_id") + "\", \"date\":\"" + rs.getDate("date") + "\", \"time\":\"" + rs.getTime("time") + "\", \"activity_id\":\"" + rs.getInt("activity_id") + "\", \"activity_type\":\"" + rs.getString("activity_type") + "\", \"species\":\"" + rs.getString("species") + "\"}";
+        //             if(!rs.isLast()){
+        //                 activityArray += ",";
+        //             }
+
+        //         } while(rs.next());
+        //         activityArray += "}";
+
+        //         PrintWriter write = resp.getWriter();
+        //         write.write(activityArray);
+        //         write.flush();
+        //         write.close();
+        //     }else{
+        //         System.out.println("No results");
+        //         resp.sendError(400);
+        //     }
+        // } catch (SQLException e) {
+        //     e.printStackTrace();
+        //     System.out.println("Database connection problem");
+        //     throw new ServletException("DB Connection problem.");
+        // }finally{
+        //     try {
+        //         rs.close();
+        //         ps.close();
+        //     } catch (SQLException e) {
+        //         System.out.println("SQLException in closing PreparedStatement or ResultSet");
+        //     }
+
+        // }
     }
 }
