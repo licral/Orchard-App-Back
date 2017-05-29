@@ -36,7 +36,6 @@ public class HistoryServlet extends HttpServlet {
 
         String[] params = req.getPathInfo().split("/");
         String activity = params[1];
-        System.out.println(activity);
 
     	if(activity == null || !isAuthorised(req.getHeader("Authorization"))){
     		resp.sendError(400);
@@ -144,7 +143,7 @@ public class HistoryServlet extends HttpServlet {
     }
 
     private void getPlantHistory(HttpServletResponse resp, String plant_id) throws ServletException, IOException{
-        System.out.println("Hit the plant history service");
+        System.out.println(plant_id);
         // Connection con = (Connection)getServletContext().getAttribute("DBConnection");
         // PreparedStatement ps = null;
         // ResultSet rs = null;
@@ -182,7 +181,6 @@ public class HistoryServlet extends HttpServlet {
         //     } catch (SQLException e) {
         //         System.out.println("SQLException in closing PreparedStatement or ResultSet");
         //     }
-
         // }
     }
 }
