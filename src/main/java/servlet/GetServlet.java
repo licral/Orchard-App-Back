@@ -284,7 +284,7 @@ public class GetServlet extends HttpServlet {
 			rs = ps.executeQuery();
 			String activityInfo = "{";
 			if(rs != null && rs.next()){
-				activityInfo += "\"plant_id\":\"" + rs.getString("plant_id") + "\", \"date\":\"" + rs.getDate("date") + "\", \"time\":\"" + rs.getTime("time") + "\", \"notes\":\"" + rs.getString("notes") + "\"";
+				activityInfo += "\"plant_id\":\"" + rs.getString("plant_id") + "\", \"date\":\"" + rs.getDate("date") + "\", \"time\":\"" + rs.getTime("time") + "\"";
 
 				int type_id = rs.getInt("type_id");
 				if(type_id == 1){
@@ -292,16 +292,16 @@ public class GetServlet extends HttpServlet {
 				} else if(type_id == 2){
 					activityInfo += getChemicalInfo(activity_id);
 				} else if(type_id == 3){
-					activityInfo += "}";
+					activityInfo +=  "";
 				} else if(type_id == 4){
 					activityInfo += getHarvestInfo(activity_id);
 				} else if(type_id == 5){
-					activityInfo += "}";
+					activityInfo +=  "";
 				} else {
 					System.out.println("Invalid type");
 					resp.sendError(400);
 				}
-
+				activityInfo += ", \"notes\":\"" + rs.getString("notes") + "\"}";
 				PrintWriter write = resp.getWriter();
 				write.write(activityInfo);
     	    	write.flush();
@@ -332,9 +332,9 @@ public class GetServlet extends HttpServlet {
 			ps.setInt(1, activity_id);
 			rs = ps.executeQuery();
 			if(rs != null && rs.next()){
-				return ", \"product\":\"" + rs.getString("product") + "\", \"rate\":\"" + rs.getInt("rate") + "\"}";
+				return ", \"product\":\"" + rs.getString("product") + "\", \"rate\":\"" + rs.getInt("rate") + "\"";
 			} else {
-				return "}";
+				return ", \"product\":\"Not Recorded\", \"rate\":\"Not Recorded\"";
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -360,9 +360,9 @@ public class GetServlet extends HttpServlet {
 			ps.setInt(1, activity_id);
 			rs = ps.executeQuery();
 			if(rs != null && rs.next()){
-				return ", \"product\":\"" + rs.getString("product") + "\", \"rate\":\"" + rs.getInt("rate") + "\"}";
+				return ", \"product\":\"" + rs.getString("product") + "\", \"rate\":\"" + rs.getInt("rate") + "\"";
 			} else {
-				return "}";
+				return ", \"product\":\"Not Recorded\", \"rate\":\"Not Recorded\"";
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -388,9 +388,9 @@ public class GetServlet extends HttpServlet {
 			ps.setInt(1, activity_id);
 			rs = ps.executeQuery();
 			if(rs != null && rs.next()){
-				return ", \"weight\":\"" + rs.getString("weight") + "\"}";
+				return ", \"weight\":\"" + rs.getString("weight") + "\"";
 			} else {
-				return "}";
+				return ", \"weight\":\"Not Recorded\"";
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
