@@ -333,6 +333,8 @@ public class GetServlet extends HttpServlet {
 			rs = ps.executeQuery();
 			if(rs != null && rs.next()){
 				return ", \"product\":\"" + rs.getString("product") + "\", \"rate\":\"" + rs.getInt("rate") + "\"}";
+			} else {
+				return "}";
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -359,6 +361,8 @@ public class GetServlet extends HttpServlet {
 			rs = ps.executeQuery();
 			if(rs != null && rs.next()){
 				return ", \"product\":\"" + rs.getString("product") + "\", \"rate\":\"" + rs.getInt("rate") + "\"}";
+			} else {
+				return "}";
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -385,6 +389,8 @@ public class GetServlet extends HttpServlet {
 			rs = ps.executeQuery();
 			if(rs != null && rs.next()){
 				return ", \"product\":\"" + rs.getString("product") + "\", \"rate\":\"" + rs.getInt("rate") + "\"}";
+			} else {
+				return "}";
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
