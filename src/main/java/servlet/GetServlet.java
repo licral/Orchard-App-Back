@@ -323,7 +323,7 @@ public class GetServlet extends HttpServlet {
 		}
     }
 
-    private void getFertiliserInfo(int activity_id){
+    private String getFertiliserInfo(int activity_id){
     	Connection con = (Connection)getServletContext().getAttribute("DBConnection");
     	PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -333,7 +333,6 @@ public class GetServlet extends HttpServlet {
 			rs = ps.executeQuery();
 			if(rs != null && rs.next()){
 				return ", \"product\":\"" + rs.getString("product") + "\", \"rate\":\"" + rs.getInt("rate") + "\"}";
-			}else{
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -350,7 +349,7 @@ public class GetServlet extends HttpServlet {
 		}
     }
 
-    private void getChemicalInfo(int activity_id){
+    private String getChemicalInfo(int activity_id){
     	Connection con = (Connection)getServletContext().getAttribute("DBConnection");
     	PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -360,7 +359,6 @@ public class GetServlet extends HttpServlet {
 			rs = ps.executeQuery();
 			if(rs != null && rs.next()){
 				return ", \"product\":\"" + rs.getString("product") + "\", \"rate\":\"" + rs.getInt("rate") + "\"}";
-			}else{
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -377,7 +375,7 @@ public class GetServlet extends HttpServlet {
 		}
     }
 
-    private void getHarvestInfo(int activity_id){
+    private String getHarvestInfo(int activity_id){
     	Connection con = (Connection)getServletContext().getAttribute("DBConnection");
     	PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -387,7 +385,6 @@ public class GetServlet extends HttpServlet {
 			rs = ps.executeQuery();
 			if(rs != null && rs.next()){
 				return ", \"product\":\"" + rs.getString("product") + "\", \"rate\":\"" + rs.getInt("rate") + "\"}";
-			}else{
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
