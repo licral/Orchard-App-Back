@@ -342,7 +342,7 @@ public class GetServlet extends HttpServlet {
 			throw new ServletException("DB Connection problem.");
 		}finally{
 			try {
-				rs.close();
+				if(rs != null) rs.close();
 				ps.close();
 			} catch (SQLException e) {
 				System.out.println("SQLException in closing PreparedStatement or ResultSet");
@@ -370,7 +370,7 @@ public class GetServlet extends HttpServlet {
 			throw new ServletException("DB Connection problem.");
 		}finally{
 			try {
-				rs.close();
+				if(rs != null) rs.close();
 				ps.close();
 			} catch (SQLException e) {
 				System.out.println("SQLException in closing PreparedStatement or ResultSet");
@@ -398,7 +398,7 @@ public class GetServlet extends HttpServlet {
 			throw new ServletException("DB Connection problem.");
 		}finally{
 			try {
-				rs.close();
+				if(rs != null) rs.close();
 				ps.close();
 			} catch (SQLException e) {
 				System.out.println("SQLException in closing PreparedStatement or ResultSet");
