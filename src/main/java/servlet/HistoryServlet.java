@@ -36,6 +36,7 @@ public class HistoryServlet extends HttpServlet {
 
         String[] params = req.getPathInfo().split("/");
         String activity = params[1];
+        System.out.println(activity);
 
     	if(activity == null || !isAuthorised(req.getHeader("Authorization"))){
     		resp.sendError(400);
