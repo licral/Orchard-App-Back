@@ -342,7 +342,7 @@ public class GetServlet extends HttpServlet {
 			throw new ServletException("DB Connection problem.");
 		}finally{
 			try {
-				if(rs != null) rs.close();
+				rs.close();
 				ps.close();
 			} catch (SQLException e) {
 				System.out.println("SQLException in closing PreparedStatement or ResultSet");
@@ -370,7 +370,7 @@ public class GetServlet extends HttpServlet {
 			throw new ServletException("DB Connection problem.");
 		}finally{
 			try {
-				if(rs != null) rs.close();
+				rs.close();
 				ps.close();
 			} catch (SQLException e) {
 				System.out.println("SQLException in closing PreparedStatement or ResultSet");
@@ -384,11 +384,11 @@ public class GetServlet extends HttpServlet {
     	PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
-			ps = con.prepareStatement("select product, rate from activity_harvest where activity_id=?");
+			ps = con.prepareStatement("select weight from activity_harvest where activity_id=?");
 			ps.setInt(1, activity_id);
 			rs = ps.executeQuery();
 			if(rs != null && rs.next()){
-				return ", \"product\":\"" + rs.getString("product") + "\", \"rate\":\"" + rs.getInt("rate") + "\"}";
+				return ", \"weight\":\"" + rs.getString("weight") + "\"}";
 			} else {
 				return "}";
 			}
@@ -398,7 +398,7 @@ public class GetServlet extends HttpServlet {
 			throw new ServletException("DB Connection problem.");
 		}finally{
 			try {
-				if(rs != null) rs.close();
+				rs.close();
 				ps.close();
 			} catch (SQLException e) {
 				System.out.println("SQLException in closing PreparedStatement or ResultSet");
