@@ -292,11 +292,11 @@ public class GetServlet extends HttpServlet {
 				} else if(type_id == 2){
 					activityInfo += getChemicalInfo(activity_id);
 				} else if(type_id == 3){
-					activity_id += "}";
+					activityInfo += "}";
 				} else if(type_id == 4){
 					activityInfo += getHarvestInfo(activity_id);
 				} else if(type_id == 5){
-					activity_id += "}";
+					activityInfo += "}";
 				} else {
 					System.out.println("Invalid type");
 					resp.sendError(400);
