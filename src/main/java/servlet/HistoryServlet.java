@@ -43,7 +43,11 @@ public class HistoryServlet extends HttpServlet {
             if(activity.equals("all")){
                 getAllActivities(resp);
             } else if(activity.equals("plant")){
-                getPlantHistory(resp, params[2]);
+                if(params[2] == null){
+                    resp.sendError(400);
+                } else {
+                    getPlantHistory(resp, params[2]);
+                }
             }
             else {
                 //handle individual activities
