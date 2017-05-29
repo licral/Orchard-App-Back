@@ -279,21 +279,115 @@ public class GetServlet extends HttpServlet {
     	PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
-			ps = con.prepareStatement("select a.activity_id, a.type_id, a.plant_id, a.date, a.time, a.notes, b.product as product_chemical, b.rate as rate_chemical, c.product as product_fertiliser, c.rate as rate_fertiliser, d.weight from activities a left join activity_chemical b on a.activity_id=b.activity_id left join activity_fertiliser c on a.activity_id=c.activity_id left join activity_harvest d on a.activity_id=d.activity_id where a.activity_id=? order by a.date, a.time");
+			ps = con.prepareStatement("select plant_id, date, time, notes, type_id from activities where activity_id=?");
 			ps.setInt(1, activity_id);
 			rs = ps.executeQuery();
 			String activityInfo = "{";
 			if(rs != null && rs.next()){
-				activityInfo += "\"activity_id\":\"" + rs.getInt("activity_id") + "\", \"type_id\":\"" + rs.getInt("type_id") + "\", \"plant_id\":\"" + rs.getString("plant_id") + "\", \"date\":\"" + rs.getDate("date") + "\", \"time\":\"" + rs.getTime("time") + "\", \"notes\":\"" + rs.gtString("notes") + "\", \"product_chemical\":\"" + rs.getString("product_chemical") + "\", \"rate_chemical\":\"" + rs.getInt("rate_chemical") + "\", \"product_fertiliser\":\"" + rs.getString("product_fertiliser") + "\", \"rate_fertiliser\":\"" + rs.getInt("rate_fertiliser") + "\", \"weight\":\"" + rs.getInt("weight") + "\"";
-				activityInfo += "}";
+				activityInfo += "\"plant_id\":\"" + rs.getString("plant_id") + "\", \"date\":\"" + rs.getDate("date") + "\", \"time\":\"" + rs.getTime("time") + "\", \"notes\":\"" + rs.getString("notes") + "\"";
+
+				int type_id = rs.getInt("type_id");
+				if(type_id == 1){
+					activityInfo += getFertiliserInfo(activity_id);
+				} else if(type_id == 2){
+					activityInfo += getChemicalInfo(activity_id);
+				} else if(type_id == 3){
+					activity_id += "}";
+				} else if(type_id == 4){
+					activityInfo += getHarvestInfo(activity_id);
+				} else if(type_id == 5){
+					activity_id += "}";
+				} else {
+					System.out.println("Invalid type");
+					resp.sendError(400);
+				}
 
 				PrintWriter write = resp.getWriter();
 				write.write(activityInfo);
     	    	write.flush();
     	    	write.close();
 			}else{
-				System.out.println("No results");
-				resp.sendError(400);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("Database connection problem");
+			throw new ServletException("DB Connection problem.");
+		}finally{
+			try {
+				rs.close();
+				ps.close();
+			} catch (SQLException e) {
+				System.out.println("SQLException in closing PreparedStatement or ResultSet");
+			}
+
+		}
+    }
+
+    private void getFertiliserInfo(int activity_id){
+    	Connection con = (Connection)getServletContext().getAttribute("DBConnection");
+    	PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			ps = con.prepareStatement("select product, rate from activity_fertiliser where activity_id=?");
+			ps.setInt(1, activity_id);
+			rs = ps.executeQuery();
+			if(rs != null && rs.next()){
+				return ", \"product\":\"" + rs.getString("product") + "\", \"rate\":\"" + rs.getInt("rate") + "\"}";
+			}else{
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("Database connection problem");
+			throw new ServletException("DB Connection problem.");
+		}finally{
+			try {
+				rs.close();
+				ps.close();
+			} catch (SQLException e) {
+				System.out.println("SQLException in closing PreparedStatement or ResultSet");
+			}
+
+		}
+    }
+
+    private void getChemicalInfo(int activity_id){
+    	Connection con = (Connection)getServletContext().getAttribute("DBConnection");
+    	PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			ps = con.prepareStatement("select product, rate from activity_chemical where activity_id=?");
+			ps.setInt(1, activity_id);
+			rs = ps.executeQuery();
+			if(rs != null && rs.next()){
+				return ", \"product\":\"" + rs.getString("product") + "\", \"rate\":\"" + rs.getInt("rate") + "\"}";
+			}else{
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("Database connection problem");
+			throw new ServletException("DB Connection problem.");
+		}finally{
+			try {
+				rs.close();
+				ps.close();
+			} catch (SQLException e) {
+				System.out.println("SQLException in closing PreparedStatement or ResultSet");
+			}
+
+		}
+    }
+
+    private void getHarvestInfo(int activity_id){
+    	Connection con = (Connection)getServletContext().getAttribute("DBConnection");
+    	PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			ps = con.prepareStatement("select product, rate from activity_harvest where activity_id=?");
+			ps.setInt(1, activity_id);
+			rs = ps.executeQuery();
+			if(rs != null && rs.next()){
+				return ", \"product\":\"" + rs.getString("product") + "\", \"rate\":\"" + rs.getInt("rate") + "\"}";
+			}else{
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
