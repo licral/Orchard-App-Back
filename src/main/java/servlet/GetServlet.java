@@ -288,13 +288,13 @@ public class GetServlet extends HttpServlet {
 
 				int type_id = rs.getInt("type_id");
 				if(type_id == 1){
-					activityInfo += getFertiliserInfo(activity_id, con);
+					activityInfo += getFertiliserInfo(activity_id);
 				} else if(type_id == 2){
-					activityInfo += getChemicalInfo(activity_id, con);
+					activityInfo += getChemicalInfo(activity_id);
 				} else if(type_id == 3){
 					activityInfo += "}";
 				} else if(type_id == 4){
-					activityInfo += getHarvestInfo(activity_id, con);
+					activityInfo += getHarvestInfo(activity_id);
 				} else if(type_id == 5){
 					activityInfo += "}";
 				} else {
@@ -323,7 +323,8 @@ public class GetServlet extends HttpServlet {
 		}
     }
 
-    private String getFertiliserInfo(int activity_id, Connection con){
+    private String getFertiliserInfo(int activity_id) throws ServletException{
+    	Connection con = (Connection)getServletContext().getAttribute("DBConnection");
     	PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
@@ -350,7 +351,8 @@ public class GetServlet extends HttpServlet {
 		}
     }
 
-    private String getChemicalInfo(int activity_id, Connection con){
+    private String getChemicalInfo(int activity_id) throws ServletException{
+    	Connection con = (Connection)getServletContext().getAttribute("DBConnection");
     	PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
@@ -377,7 +379,8 @@ public class GetServlet extends HttpServlet {
 		}
     }
 
-    private String getHarvestInfo(int activity_id, Connection con){
+    private String getHarvestInfo(int activity_id) throws ServletException{
+    	Connection con = (Connection)getServletContext().getAttribute("DBConnection");
     	PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
