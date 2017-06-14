@@ -284,7 +284,7 @@ public class GetServlet extends HttpServlet {
 			rs = ps.executeQuery();
 			String activityInfo = "{";
 			if(rs != null && rs.next()){
-				activityInfo += "\"Plant ID\":\"" + rs.getString("plant_id") + "\", \"Species\":\"" + rs.getString("species") + "\", \"Variety\":\"" + rs.getString("variety") + "\", \"Activity Type\":\"" + rs.getInt("activity_type") + "\", \"Date\":\"" + rs.getDate("date") + "\", \"Time\":\"" + rs.getTime("time") + "\"";
+				activityInfo += "\"Plant ID\":\"" + rs.getString("plant_id") + "\", \"Species\":\"" + rs.getString("species") + "\", \"Variety\":\"" + rs.getString("variety") + "\", \"Activity Type\":\"" + rs.getString("activity_type") + "\", \"Date\":\"" + rs.getDate("date") + "\", \"Time\":\"" + rs.getTime("time") + "\"";
 
 				int type_id = rs.getInt("type_id");
 				if(type_id == 1){
