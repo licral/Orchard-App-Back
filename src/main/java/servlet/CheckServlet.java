@@ -37,48 +37,53 @@ public class CheckServlet extends HttpServlet {
     	String[] params = req.getPathInfo().split("/");
         String plant_id = params[1];
 
-        String[] test_id = plant_id.split("\\s+");
-        System.out.println(test_id.length);
-
-        if(plant_id == null || !isAuthorised(req.getHeader("Authorization"))){
-            resp.sendError(400);
+        if(plant_id == null || plant_id.split("\\s+").length > 1){
+            resp.setStatus(400);
+            PrintWriter write = resp.getWriter();
+            write.write("Plant ID is invalid.");
+            write.flush();
+            write.close();
         } else {
-            Connection con = (Connection)getServletContext().getAttribute("DBConnection");
-            PreparedStatement ps = null;
-            ResultSet rs = null;
-            try {
-                ps = con.prepareStatement("select organisation_id from plant_record where plant_id=?");
-                ps.setString(1, plant_id);
-                rs = ps.executeQuery();
-                if(rs != null && rs.next()){
-                    if(rs.getString("organisation_id").equals(organisation_id)){
-                        resp.setStatus(200);
-                    } else {
-                        resp.setStatus(400);
-                        PrintWriter write = resp.getWriter();
-                        write.write("Plant ID has already been registered by another organisation.");
-                        write.flush();
-                        write.close();
-                    }
-                }else{
-                    PrintWriter write = resp.getWriter();
-                    write.write("Not Registered");
-                    write.flush();
-                    write.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-                System.out.println("Database connection problem");
-                throw new ServletException("DB Connection problem.");
-            }finally{
-                try {
-                    rs.close();
-                    ps.close();
-                } catch (SQLException e) {
-                    System.out.println("SQLException in closing PreparedStatement or ResultSet");
-                }
+	        if(!isAuthorised(req.getHeader("Authorization"))){
+	            resp.sendError(400);
+	        } else {
+	            Connection con = (Connection)getServletContext().getAttribute("DBConnection");
+	            PreparedStatement ps = null;
+	            ResultSet rs = null;
+	            try {
+	                ps = con.prepareStatement("select organisation_id from plant_record where plant_id=?");
+	                ps.setString(1, plant_id);
+	                rs = ps.executeQuery();
+	                if(rs != null && rs.next()){
+	                    if(rs.getString("organisation_id").equals(organisation_id)){
+	                        resp.setStatus(200);
+	                    } else {
+	                        resp.setStatus(400);
+	                        PrintWriter write = resp.getWriter();
+	                        write.write("Plant ID has already been registered by another organisation.");
+	                        write.flush();
+	                        write.close();
+	                    }
+	                }else{
+	                    PrintWriter write = resp.getWriter();
+	                    write.write("Not Registered");
+	                    write.flush();
+	                    write.close();
+	                }
+	            } catch (SQLException e) {
+	                e.printStackTrace();
+	                System.out.println("Database connection problem");
+	                throw new ServletException("DB Connection problem.");
+	            }finally{
+	                try {
+	                    rs.close();
+	                    ps.close();
+	                } catch (SQLException e) {
+	                    System.out.println("SQLException in closing PreparedStatement or ResultSet");
+	                }
 
-            }
+	            }
+	        }
         }
     }
 
