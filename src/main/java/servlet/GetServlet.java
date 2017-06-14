@@ -248,7 +248,7 @@ public class GetServlet extends HttpServlet {
 			rs = ps.executeQuery();
 			String plantInfo = "{";
 			if(rs != null && rs.next()){
-				plantInfo += "\"plant_id\":\"" + rs.getString("plant_id") + "\", \"date\":\"" + rs.getDate("date") + "\", \"notes\":\"" + rs.getString("notes") + "\", \"visual_tag\":\"" + rs.getString("visual_tag") + "\", \"longitude\":\"" + rs.getDouble("longitude") + "\", \"latitude\":\"" + rs.getDouble("latitude") + "\", \"variety\":\"" + rs.getString("variety") + "\", \"species\":\"" + rs.getString("species") + "\"";
+				plantInfo += "\"Plant ID\":\"" + rs.getString("plant_id") + "\", \"Species\":\"" + rs.getString("species") + "\", \"Variety\":\"" + rs.getString("variety") + "\", \"Visual Tag\":\"" + rs.getString("visual_tag") + "\", \"Date Registered\":\"" + rs.getDate("date") + "\", \"Longitude\":\"" + rs.getDouble("longitude") + "\", \"Latitude\":\"" + rs.getDouble("latitude") + "\", \"Notes\":\"" + rs.getString("notes") + "\"";
 				plantInfo += "}";
 
 				PrintWriter write = resp.getWriter();
