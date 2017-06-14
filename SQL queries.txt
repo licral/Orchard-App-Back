@@ -1,8 +1,8 @@
 Get last 10 activities for one account
 
-select g.species, h.activity_id, h.plant_id, h.date, h.time, h.activity_type
+select h.variety, g.species, h.activity_id, h.plant_id, h.date, h.time, h.activity_type
 from species g
-inner join (select e.species_id as species_id, f.activity_id as activity_id, f.plant_id as plant_id, f.date as date, f.time as time, f.activity_type as activity_type
+inner join (select e.variety as variety, e.species_id as species_id, f.activity_id as activity_id, f.plant_id as plant_id, f.date as date, f.time as time, f.activity_type as activity_type
 from variety e
 inner join (select c.variety_id as variety_id, d.activity_id as activity_id, d.plant_id as plant_id, d.date as date, d.time as time, d.activity_type as activity_type 
 from plant_record c
