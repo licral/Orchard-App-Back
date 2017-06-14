@@ -49,13 +49,18 @@ on c.species_id=d.species_id
 
 Get Activity info
 
-select a.activity_id, a.type_id, a.plant_id, a.date, a.time, a.notes, b.product, b.rate, c.product, c.rate, d.weight
+select h.variety, g.species, h.plant_id, h.date, h.time, h.type_id, h.activity_type
+from species g
+inner join (select e.variety as variety, e.species_id as species_id, f.plant_id as plant_id, f.date as date, f.time as time, f.type_id as type_id, f.activity_type as activity_type
+from variety e
+inner join (select c.variety_id as variety_id, d.plant_id as plant_id, d.date as date, d.time as time, d.type_id as type_id, d.activity_type as activity_type 
+from plant_record c
+inner join (select a.plant_id as plant_id, a.date as date, a.time as time, a.type_id as type_id, b.activity_type as activity_type
 from activities a
-left join activity_chemical b
-on a.activity_id=b.activity_id
-left join activity_fertiliser c
-on a.activity_id=c.activity_id
-left join activity_harvest d
-on a.activity_id=d.activity_id
-where a.activity_id=2
-order by a.date, a.time
+inner join activity_types b
+on a.type_id=b.type_id 
+where a.activity_id=34 
+order by a.date DESC, a.time DESC LIMIT 10) d
+on c.plant_id=d.plant_id) f
+on e.variety_id=f.variety_id) h
+on g.species_id=h.species_id

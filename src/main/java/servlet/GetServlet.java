@@ -279,12 +279,12 @@ public class GetServlet extends HttpServlet {
     	PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
-			ps = con.prepareStatement("select plant_id, date, time, notes, type_id from activities where activity_id=?");
+			ps = con.prepareStatement("select h.variety, g.species, h.plant_id, h.date, h.time, h.type_id, h.activity_type from species g inner join (select e.variety as variety, e.species_id as species_id, f.plant_id as plant_id, f.date as date, f.time as time, f.type_id as type_id, f.activity_type as activity_type from variety e inner join (select c.variety_id as variety_id, d.plant_id as plant_id, d.date as date, d.time as time, d.type_id as type_id, d.activity_type as activity_type from plant_record c inner join (select a.plant_id as plant_id, a.date as date, a.time as time, a.type_id as type_id, b.activity_type as activity_type from activities a inner join activity_types b on a.type_id=b.type_id where a.activity_id=? order by a.date DESC, a.time DESC LIMIT 10) d on c.plant_id=d.plant_id) f on e.variety_id=f.variety_id) h on g.species_id=h.species_id");
 			ps.setInt(1, activity_id);
 			rs = ps.executeQuery();
 			String activityInfo = "{";
 			if(rs != null && rs.next()){
-				activityInfo += "\"Plant ID\":\"" + rs.getString("plant_id") + "\", \"Date\":\"" + rs.getDate("date") + "\", \"Time\":\"" + rs.getTime("time") + "\"";
+				activityInfo += "\"Plant ID\":\"" + rs.getString("plant_id") + "\", \"Species\":\"" + rs.getDate("species") + "\", \"Variety\":\"" + rs.getDate("variety") + "\", \"Activity Type\":\"" + rs.getDate("activity_type") + "\", \"Date\":\"" + rs.getDate("date") + "\", \"Time\":\"" + rs.getTime("time") + "\"";
 
 				int type_id = rs.getInt("type_id");
 				if(type_id == 1){
