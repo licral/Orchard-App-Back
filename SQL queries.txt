@@ -99,6 +99,7 @@ on a.type_id=e.type_id
 where a.organisation_id='test_account1'
 order by a.date desc, a.time desc
 
+
 List all registered plants
 
 select a.plant_id, b.variety, c.species
@@ -108,3 +109,4 @@ on a.variety_id=b.variety_id
 inner join species c
 on b.species_id=c.species_id
 where organisation_id='test1'
+order by a.plant_id ASC
