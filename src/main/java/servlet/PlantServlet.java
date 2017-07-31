@@ -37,6 +37,7 @@ public class PlantServlet extends HttpServlet {
         String[] params = req.getPathInfo().split("/");
         String option = params[1];
         System.out.println(option);
+        System.out.println(params);
 
     	if(option == null || !isAuthorised(req.getHeader("Authorization"))){
     		resp.sendError(400);
