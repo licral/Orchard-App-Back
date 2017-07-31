@@ -36,9 +36,6 @@ public class PlantServlet extends HttpServlet {
 
         String[] params = req.getPathInfo().split("/");
         String option = params[1];
-        System.out.println(option);
-        System.out.println(params);
-        System.out.println("Testing print statement");
 
     	if(option == null || !isAuthorised(req.getHeader("Authorization"))){
     		resp.sendError(400);
@@ -106,24 +103,24 @@ public class PlantServlet extends HttpServlet {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            ps = con.prepareStatement("select a.activity_id, a.date, a.time, a.plant_id, c.variety, d.species, e.activity_type from activities a inner join plant_record b on a.plant_id=b.plant_id inner join variety c on b.variety_id=c.variety_id inner join species d on c.species_id=d.species_id inner join activity_types e on a.type_id=e.type_id where a.organisation_id=? order by a.date desc, a.time desc limit 10");
+            ps = con.prepareStatement("select a.plant_id, b.variety, c.species from plant_record a inner join variety b on a.variety_id=b.variety_id inner join species c on b.species_id=c.species_id where organisation_id=?");
             ps.setString(1, organisation_id);
             rs = ps.executeQuery();
-            String activityArray = "[";
+            String plantArray = "[";
             if(rs != null && rs.next()){
                 do{
-                    activityArray += "{\"plant_id\":\"" + rs.getString("plant_id") + "\", \"date\":\"" + rs.getDate("date") + "\", \"time\":\"" + rs.getTime("time") + "\", \"activity_id\":\"" + rs.getInt("activity_id") + "\", \"activity_type\":\"" + rs.getString("activity_type") + "\", \"species\":\"" + rs.getString("species") + "\", \"variety\":\"" + rs.getString("variety") + "\"}";
+                    plantArray += "{\"plant_id\":\"" + rs.getString("plant_id") + "\", \"species\":\"" + rs.getString("species") + "\", \"variety\":\"" + rs.getString("variety") + "\"}";
                     if(!rs.isLast()){
-                        activityArray += ",";
+                        plantArray += ",";
                     }
 
                 } while(rs.next());
-                activityArray += "]";
+                plantArray += "]";
 
-                System.out.println(activityArray);
+                System.out.println(plantArray);
 
                 PrintWriter write = resp.getWriter();
-                write.write(activityArray);
+                write.write(plantArray);
                 write.flush();
                 write.close();
             }else{
