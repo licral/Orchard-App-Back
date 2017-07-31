@@ -38,6 +38,7 @@ public class PlantServlet extends HttpServlet {
         String option = params[1];
         System.out.println(option);
         System.out.println(params);
+        System.out.println("Testing print statement");
 
     	if(option == null || !isAuthorised(req.getHeader("Authorization"))){
     		resp.sendError(400);
