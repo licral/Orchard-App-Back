@@ -1,0 +1,26 @@
+variety structure:
+
+[
+    {
+        1 : "Apple",
+        variety : [
+            { 1 : "Braeburn" },
+            { 2 : "Royal Gala" },
+            { 3 : "Pacific Rose" }
+        ]
+    },
+    {
+        2 : "Apricot",
+        variety : [
+            { 4 : "Morpark" },
+            { 5 : "Sundrop" }
+        ]
+    },
+    {
+        3 : "Peach",
+        variety : [
+            { 6 : "Doris" },
+            { 7 : "Southern Star" }
+        ]
+    }
+]
