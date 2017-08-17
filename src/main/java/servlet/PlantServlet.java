@@ -113,13 +113,13 @@ public class PlantServlet extends HttpServlet {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            ps = con.prepareStatement("select a.plant_id, b.variety, c.species from plant_record a inner join variety b on a.variety_id=b.variety_id inner join species c on b.species_id=c.species_id where organisation_id=? order by a.plant_id ASC");
+            ps = con.prepareStatement("select a.plant_id, b.variety, c.species, a.latitude, a.longitude, from plant_record a inner join variety b on a.variety_id=b.variety_id inner join species c on b.species_id=c.species_id where organisation_id=? order by a.plant_id ASC");
             ps.setString(1, organisation_id);
             rs = ps.executeQuery();
             String plantArray = "[";
             if(rs != null && rs.next()){
                 do{
-                    plantArray += "{\"plant_id\":\"" + rs.getString("plant_id") + "\", \"species\":\"" + rs.getString("species") + "\", \"variety\":\"" + rs.getString("variety") + "\"}";
+                    plantArray += "{\"plant_id\":\"" + rs.getString("plant_id") + "\", \"species\":\"" + rs.getString("species") + "\", \"variety\":\"" + rs.getString("variety") + "\", \"latitude\":\"" + rs.getString("latitude") + "\", \"longitude\":\"" + rs.getString("longitude") + "\"}";
                     if(!rs.isLast()){
                         plantArray += ",";
                     }
