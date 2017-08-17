@@ -35,15 +35,6 @@ public class PlantServlet extends HttpServlet {
             throws ServletException, IOException {
 
         String[] params = req.getPathInfo().split("/");
-<<<<<<< HEAD
-        String activity = params[1];
-
-    	if(activity == null || !isAuthorised(req.getHeader("Authorization"))){
-    		resp.sendError(400);
-    	} else {
-            if(activity.equals("all")){
-                getAllPlants(resp);
-=======
         String option = params[1];
 
     	if(option == null || !isAuthorised(req.getHeader("Authorization"))){
@@ -51,7 +42,6 @@ public class PlantServlet extends HttpServlet {
     	} else {
             if(option.equals("all")){
                 getallPlants(resp);
->>>>>>> 1797c8d15eb55c4d7d303d0b218a56833a105951
             }
             else {
                 resp.sendError(400);
