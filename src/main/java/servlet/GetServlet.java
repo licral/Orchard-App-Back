@@ -216,8 +216,10 @@ public class GetServlet extends HttpServlet {
                         }
                         curr_species_id = rs.getInt("species_id");
                         speciesArray += "{" + rs.getInt("species_id") + ":\"" + rs.getString("species") + "\", \"variety\":[";
+                    } else {
+                        speciesArray += ",";
                     }
-                    speciesArray += "{" + rs.getInt("variety_id") + ":\"" + rs.getString("variety") + "\"},";
+                    speciesArray += "{" + rs.getInt("variety_id") + ":\"" + rs.getString("variety") + "\"}";
 
 				} while(rs.next());
 				speciesArray += "]}]";
