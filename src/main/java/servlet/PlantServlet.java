@@ -41,7 +41,7 @@ public class PlantServlet extends HttpServlet {
     		resp.sendError(400);
     	} else {
             if(option.equals("all")){
-                getallPlants(resp);
+                getAllPlants(resp);
             }
             else {
                 resp.sendError(400);
