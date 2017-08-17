@@ -35,6 +35,7 @@ public class PlantServlet extends HttpServlet {
             throws ServletException, IOException {
 
         String[] params = req.getPathInfo().split("/");
+<<<<<<< HEAD
         String activity = params[1];
 
     	if(activity == null || !isAuthorised(req.getHeader("Authorization"))){
@@ -42,6 +43,15 @@ public class PlantServlet extends HttpServlet {
     	} else {
             if(activity.equals("all")){
                 getAllPlants(resp);
+=======
+        String option = params[1];
+
+    	if(option == null || !isAuthorised(req.getHeader("Authorization"))){
+    		resp.sendError(400);
+    	} else {
+            if(option.equals("all")){
+                getallPlants(resp);
+>>>>>>> 1797c8d15eb55c4d7d303d0b218a56833a105951
             }
             else {
                 resp.sendError(400);
@@ -103,72 +113,27 @@ public class PlantServlet extends HttpServlet {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            ps = con.prepareStatement("select a.activity_id, a.date, a.time, a.plant_id, c.variety, d.species, e.activity_type from activities a inner join plant_record b on a.plant_id=b.plant_id inner join variety c on b.variety_id=c.variety_id inner join species d on c.species_id=d.species_id inner join activity_types e on a.type_id=e.type_id where a.organisation_id=? order by a.date desc, a.time desc limit 10");
+            ps = con.prepareStatement("select a.plant_id, b.variety, c.species from plant_record a inner join variety b on a.variety_id=b.variety_id inner join species c on b.species_id=c.species_id where organisation_id=? order by a.plant_id ASC");
             ps.setString(1, organisation_id);
             rs = ps.executeQuery();
-            String activityArray = "[";
+            String plantArray = "[";
             if(rs != null && rs.next()){
                 do{
-                    activityArray += "{\"plant_id\":\"" + rs.getString("plant_id") + "\", \"date\":\"" + rs.getDate("date") + "\", \"time\":\"" + rs.getTime("time") + "\", \"activity_id\":\"" + rs.getInt("activity_id") + "\", \"activity_type\":\"" + rs.getString("activity_type") + "\", \"species\":\"" + rs.getString("species") + "\", \"variety\":\"" + rs.getString("variety") + "\"}";
+                    plantArray += "{\"plant_id\":\"" + rs.getString("plant_id") + "\", \"species\":\"" + rs.getString("species") + "\", \"variety\":\"" + rs.getString("variety") + "\"}";
                     if(!rs.isLast()){
-                        activityArray += ",";
+                        plantArray += ",";
                     }
 
                 } while(rs.next());
-                activityArray += "]";
+                plantArray += "]";
 
                 PrintWriter write = resp.getWriter();
-                write.write(activityArray);
+                write.write(plantArray);
                 write.flush();
                 write.close();
             }else{
                 System.out.println("No results");
                 resp.sendError(400);
-              }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println("Database connection problem");
-            throw new ServletException("DB Connection problem.");
-        }finally{
-            try {
-                rs.close();
-                ps.close();
-            } catch (SQLException e) {
-                System.out.println("SQLException in closing PreparedStatement or ResultSet");
-            }
-
-        }
-    }
-
-    private void getPlantHistory(HttpServletResponse resp, String plant_id) throws ServletException, IOException{
-        Connection con = (Connection)getServletContext().getAttribute("DBConnection");
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        try {
-            ps = con.prepareStatement("select h.variety, g.species, h.activity_id, h.plant_id, h.date, h.time, h.activity_type from species g inner join (select e.variety as variety, e.species_id as species_id, f.activity_id as activity_id, f.plant_id as plant_id, f.date as date, f.time as time, f.activity_type as activity_type from variety e inner join (select c.variety_id as variety_id, d.activity_id as activity_id, d.plant_id as plant_id, d.date as date, d.time as time, d.activity_type as activity_type from plant_record c inner join (select a.activity_id as activity_id, a.plant_id as plant_id, a.date as date, a.time as time, b.activity_type as activity_type from activities a inner join activity_types b on a.type_id=b.type_id where a.plant_id=? order by a.date DESC, a.time DESC LIMIT 10) d on c.plant_id=d.plant_id) f on e.variety_id=f.variety_id) h on g.species_id=h.species_id");
-            ps.setString(1, plant_id);
-            rs = ps.executeQuery();
-            String activityArray = "[";
-            if(rs != null && rs.next()){
-                do{
-                    activityArray += "{\"plant_id\":\"" + rs.getString("plant_id") + "\", \"date\":\"" + rs.getDate("date") + "\", \"time\":\"" + rs.getTime("time") + "\", \"activity_id\":\"" + rs.getInt("activity_id") + "\", \"activity_type\":\"" + rs.getString("activity_type") + "\", \"species\":\"" + rs.getString("species") + "\", \"variety\":\"" + rs.getString("variety") + "\"}";
-                    if(!rs.isLast()){
-                        activityArray += ",";
-                    }
-
-                } while(rs.next());
-                activityArray += "]";
-
-                PrintWriter write = resp.getWriter();
-                write.write(activityArray);
-                write.flush();
-                write.close();
-            }else{
-                resp.setStatus(400);
-                PrintWriter write = resp.getWriter();
-                write.write("No Results");
-                write.flush();
-                write.close();
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -181,6 +146,7 @@ public class PlantServlet extends HttpServlet {
             } catch (SQLException e) {
                 System.out.println("SQLException in closing PreparedStatement or ResultSet");
             }
+
         }
     }
 }

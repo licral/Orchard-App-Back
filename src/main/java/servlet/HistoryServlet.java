@@ -109,7 +109,7 @@ public class HistoryServlet extends HttpServlet {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            ps = con.prepareStatement("select a.activity_id, a.date, a.time, a.plant_id, c.variety, d.species, e.activity_type from activities a inner join plant_record b on a.plant_id=b.plant_id inner join variety c on b.variety_id=c.variety_id inner join species d on c.species_id=d.species_id inner join activity_types e on a.type_id=e.type_id where a.organisation_id=? order by a.date desc, a.time desc limit 10");
+            ps = con.prepareStatement("select a.activity_id, a.date, a.time, a.plant_id, c.variety, d.species, e.activity_type from activities a inner join plant_record b on a.plant_id=b.plant_id inner join variety c on b.variety_id=c.variety_id inner join species d on c.species_id=d.species_id inner join activity_types e on a.type_id=e.type_id where a.organisation_id=? order by a.date desc, a.time desc");
             ps.setString(1, organisation_id);
             rs = ps.executeQuery();
             String activityArray = "[";

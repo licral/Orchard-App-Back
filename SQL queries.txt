@@ -68,6 +68,22 @@ on e.variety_id=f.variety_id) h
 on g.species_id=h.species_id
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+=======================================================================================
+NEW AND IMPROVED QUERIES
+=======================================================================================
+
 Get past 10 activities
 
 select a.activity_id, a.date, a.time, a.plant_id, c.variety, d.species, e.activity_type
@@ -82,3 +98,15 @@ inner join activity_types e
 on a.type_id=e.type_id
 where a.organisation_id='test_account1'
 order by a.date desc, a.time desc
+
+
+List all registered plants
+
+select a.plant_id, b.variety, c.species
+from plant_record a
+inner join variety b
+on a.variety_id=b.variety_id
+inner join species c
+on b.species_id=c.species_id
+where organisation_id='test1'
+order by a.plant_id ASC
